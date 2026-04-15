@@ -1,0 +1,44 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="70" x2="1110" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#091224"/>
+      <stop offset="0.55" stop-color="#12305E"/>
+      <stop offset="1" stop-color="#1A56DB"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1200" height="630" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#08111F" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+  <circle cx="973" cy="154" r="162" fill="#F59E0B" fill-opacity="0.08"/>
+  <circle cx="164" cy="512" r="198" fill="#60A5FA" fill-opacity="0.12"/>
+  <g filter="url(#shadow)">
+    <rect x="80" y="86" width="1040" height="458" rx="36" fill="white" fill-opacity="0.08" stroke="white" stroke-opacity="0.15"/>
+  </g>
+  <rect x="122" y="129" width="92" height="92" rx="24" fill="url(#accent)"/>
+  <path d="M143 191V159L161 141H199L217 159V191Z" stroke="white" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="157.5" cy="194.5" r="10.5" fill="white"/>
+  <circle cx="202.5" cy="194.5" r="10.5" fill="white"/>
+  <path d="M168 191H192" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <text x="242" y="168" fill="#AFC2F7" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="0.18em">АВТОПАРК ЛУЗЯНИНА</text>
+  <text x="122" y="288" fill="white" font-family="Inter, Arial, sans-serif" font-size="74" font-weight="700">
+    Грузоперевозки из Казани
+  </text>
+  <text x="122" y="368" fill="#F8B84B" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="700">
+    по городу, региону и межгороду
+  </text>
+  <text x="122" y="442" fill="#D4DDF8" font-family="Inter, Arial, sans-serif" font-size="30">
+    Mercedes Sprinter Classic • 24/7 • Маршруты по запросу
+  </text>
+  <rect x="122" y="476" width="358" height="56" rx="28" fill="white" fill-opacity="0.14"/>
+  <text x="156" y="513" fill="white" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600">
+    autoluz.ru
+  </text>
+  <text x="900" y="500" fill="#D4DDF8" font-family="Inter, Arial, sans-serif" font-size="30" text-anchor="end">
+    +7 (843) 200-00-00
+  </text>
+</svg>
