@@ -1,0 +1,483 @@
+---
+import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<section class="section contacts-section" id="contacts" aria-labelledby="contacts-heading">
+  <div class="contacts-bg" aria-hidden="true">
+    <div class="contacts-orb contacts-orb-1"></div>
+    <div class="contacts-orb contacts-orb-2"></div>
+  </div>
+  <div class="container contacts-container">
+    <div class="contacts-left">
+      <div data-reveal="left">
+        <div class="chip chip-accent section-chip">
+          <span class="material-symbols-outlined" aria-hidden="true">contact_phone</span>
+          {t(lang, 'contacts_chip')}
+        </div>
+        <h2 class="heading-lg contacts-title" id="contacts-heading">
+          {t(lang, 'contacts_title').split('\n').map((line: string, i: number) => (
+            <span>
+              {i === 0 ? line : <><br /><span class="text-accent">{line}</span></>}
+            </span>
+          ))}
+        </h2>
+      </div>
+      <div class="contacts-cards">
+        <a
+          href="tel:+78432000000"
+          class="contact-card contact-card--phone glass"
+          data-reveal="left"
+          data-delay="1"
+          aria-label="Позвонить: +7 (843) 200-00-00"
+        >
+          <div class="contact-card-icon">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+          </div>
+          <div class="contact-card-body">
+            <div class="contact-card-label">{t(lang, 'contacts_phone_label')}</div>
+            <div class="contact-card-value">+7 (843) 200-00-00</div>
+            <div class="contact-card-hint">Звоните 24/7 - всегда ответим</div>
+          </div>
+          <div class="contact-card-arrow">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </div>
+          <div class="contact-pulse" aria-hidden="true">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring pulse-ring-2"></div>
+          </div>
+        </a>
+        <a
+          href="mailto:info@autoluz.ru"
+          class="contact-card contact-card--email glass"
+          data-reveal="left"
+          data-delay="2"
+          aria-label="Написать: info@autoluz.ru"
+        >
+          <div class="contact-card-icon">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+          </div>
+          <div class="contact-card-body">
+            <div class="contact-card-label">{t(lang, 'contacts_email_label')}</div>
+            <div class="contact-card-value">info@autoluz.ru</div>
+            <div class="contact-card-hint">Ответим в течение 2 часов</div>
+          </div>
+          <div class="contact-card-arrow">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </div>
+        </a>
+        <div class="contact-card contact-card--address glass" data-reveal="left" data-delay="3">
+          <div class="contact-card-icon">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">location_on</span>
+          </div>
+          <div class="contact-card-body">
+            <div class="contact-card-label">{t(lang, 'contacts_address_label')}</div>
+            <div class="contact-card-value">{t(lang, 'contacts_address_value')}</div>
+            <div class="contact-card-hint">Казань, Татарстан и дальние рейсы по запросу</div>
+          </div>
+        </div>
+        <div class="contact-card contact-card--schedule glass" data-reveal="left" data-delay="4">
+          <div class="contact-card-icon">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">schedule</span>
+          </div>
+          <div class="contact-card-body">
+            <div class="contact-card-label">{t(lang, 'contacts_schedule_label')}</div>
+            <div class="contact-card-value">{t(lang, 'contacts_schedule_value')}</div>
+            <div class="contact-card-hint">Без выходных и праздников</div>
+          </div>
+          <div class="schedule-live">
+            <div class="live-dot"></div>
+            <span>На связи</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contacts-right" data-reveal="right" data-delay="1">
+      <div class="contacts-cta-block glass">
+        <div class="cta-block-bg" aria-hidden="true"></div>
+        <div class="cta-block-header">
+          <div class="cta-block-icon-wrap">
+            <img
+              src="/images/sprinter-front.png"
+              alt="Mercedes Sprinter Classic"
+              class="cta-block-truck"
+              width="200"
+              height="240"
+              loading="lazy"
+            />
+          </div>
+          <div class="cta-block-badges">
+            <div class="cta-badge">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">bolt</span>
+              Выезд за 2 часа
+            </div>
+            <div class="cta-badge">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">verified</span>
+              Договор сразу
+            </div>
+            <div class="cta-badge">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">shield</span>
+              Груз застрахован
+            </div>
+          </div>
+        </div>
+        <h3 class="cta-block-title">
+          Позвоните прямо сейчас
+        </h3>
+        <p class="cta-block-subtitle">
+          Бесплатная консультация и точный расчёт стоимости - за 3 минуты
+        </p>
+        <div class="cta-block-btns">
+          <a href="tel:+78432000000" class="btn-primary cta-main-btn">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+            <div>
+              <div class="cta-main-btn-text">{t(lang, 'contacts_call_btn')}</div>
+              <div class="cta-main-btn-num">+7 (843) 200-00-00</div>
+            </div>
+          </a>
+          <a href="mailto:info@autoluz.ru" class="btn-secondary cta-secondary-btn">
+            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+            {t(lang, 'contacts_mail_btn')}
+          </a>
+        </div>
+        <div class="cta-social-proof">
+          <div class="proof-avatars" aria-hidden="true">
+            {[...Array(4)].map((_, i) => (
+              <div class={`proof-avatar proof-avatar-${i+1}`}>
+                <span class="material-symbols-outlined icon-filled" aria-hidden="true">person</span>
+              </div>
+            ))}
+          </div>
+          <div class="proof-text">
+            <div class="proof-count">1 300+ клиентов</div>
+            <div class="proof-stars" aria-label="Рейтинг 5 звёзд">
+              {[...Array(5)].map(() => (
+                <span class="material-symbols-outlined icon-filled proof-star" aria-hidden="true">star</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .contacts-section {
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .contacts-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .contacts-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+  }
+  .contacts-orb-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(26,86,219,0.1) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+  }
+  .contacts-orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+    bottom: -100px;
+    left: 10%;
+  }
+  .contacts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .section-chip { margin-bottom: 16px; }
+  .contacts-title {
+    margin-bottom: 36px;
+    white-space: pre-line;
+  }
+  .contacts-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 20px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  a.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+  .contact-card-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-card--phone .contact-card-icon {
+    background: rgba(26,86,219,0.12);
+  }
+  .contact-card--phone .material-symbols-outlined { color: var(--accent); font-size: 1.4rem; }
+  .contact-card--email .contact-card-icon {
+    background: rgba(124,58,237,0.12);
+  }
+  .contact-card--email .material-symbols-outlined { color: #7c3aed; font-size: 1.4rem; }
+  .contact-card--address .contact-card-icon {
+    background: rgba(5,150,105,0.12);
+  }
+  .contact-card--address .material-symbols-outlined { color: #059669; font-size: 1.4rem; }
+  .contact-card--schedule .contact-card-icon {
+    background: rgba(245,158,11,0.12);
+  }
+  .contact-card--schedule .material-symbols-outlined { color: #d97706; font-size: 1.4rem; }
+  .contact-card-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: var(--font-semibold);
+    margin-bottom: 4px;
+  }
+  .contact-card-value {
+    font-size: 0.92rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    word-break: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+  }
+  .contact-card-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .contact-card-arrow {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all var(--transition-fast);
+  }
+  a.contact-card:hover .contact-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--accent);
+  }
+  .contact-pulse {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 24px;
+    height: 24px;
+  }
+  .pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: contact-pulse 2s ease-out infinite;
+    opacity: 0;
+  }
+  .pulse-ring-2 { animation-delay: 1s; }
+  @keyframes contact-pulse {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+  .schedule-live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: var(--font-semibold);
+    color: #059669;
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #059669;
+    animation: live-blink 1.5s ease infinite;
+  }
+  @keyframes live-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .contacts-right {
+    position: sticky;
+    top: 100px;
+  }
+  .contacts-cta-block {
+    padding: 36px 32px;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-accent);
+    opacity: 0.05;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .cta-block-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-block-truck {
+    width: 110px;
+    height: auto;
+    filter: drop-shadow(0 10px 20px rgba(26,86,219,0.3));
+    animation: truck-hover 4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .cta-block-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .cta-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+  }
+  .cta-badge .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--accent-secondary);
+  }
+  .cta-block-title {
+    font-size: 1.5rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-block-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-block-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-main-btn {
+    gap: 14px;
+    padding: 16px 24px;
+    justify-content: flex-start;
+    animation: cta-glow 3s ease-in-out infinite;
+  }
+  .cta-main-btn-text {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-weight: var(--font-regular);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .cta-main-btn-num {
+    font-size: 1.1rem;
+    font-weight: var(--font-semibold);
+    line-height: 1;
+  }
+  .cta-secondary-btn {
+    justify-content: center;
+  }
+  .cta-social-proof {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+  .proof-avatars {
+    display: flex;
+    margin-right: 4px;
+  }
+  .proof-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    margin-left: -8px;
+    flex-shrink: 0;
+  }
+  .proof-avatar:first-child { margin-left: 0; }
+  .proof-avatar-1 { background: #1a56db; }
+  .proof-avatar-2 { background: #7c3aed; }
+  .proof-avatar-3 { background: #059669; }
+  .proof-avatar-4 { background: #d97706; }
+  .proof-count {
+    font-size: 0.85rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .proof-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .proof-star {
+    font-size: 0.85rem;
+    color: #f59e0b;
+  }
+  @media (max-width: 1024px) {
+    .contacts-container { grid-template-columns: 1fr; gap: 40px; }
+    .contacts-right { position: static; }
+  }
+  @media (max-width: 600px) {
+    .contacts-cards { grid-template-columns: 1fr; }
+    .contacts-cta-block { padding: 24px 20px; }
+    .cta-block-header { flex-direction: column; align-items: center; text-align: center; }
+    .cta-block-badges { align-items: center; }
+    .cta-block-title { font-size: 1.3rem; text-align: center; }
+    .cta-block-subtitle { text-align: center; }
+  }
+</style>

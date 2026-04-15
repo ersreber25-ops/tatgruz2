@@ -1,0 +1,339 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/index';
+const lang: Lang = 'ru';
+---
+<BaseLayout
+  lang={lang}
+  title="Политика конфиденциальности - Автопарк Лузянина"
+  description="Политика конфиденциальности Автопарка Лузянина. Как мы обрабатываем и защищаем ваши данные."
+>
+  <Header lang={lang} currentPath="/privacy" />
+  <main id="main-content" class="legal-page">
+    <div class="legal-hero">
+      <div class="container">
+        <div class="chip chip-accent" style="margin-bottom:16px">
+          <span class="material-symbols-outlined" aria-hidden="true">shield</span>
+          Документ
+        </div>
+        <h1 class="heading-xl legal-title">Политика<br /><span class="text-accent">конфиденциальности</span></h1>
+        <p class="legal-date">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+          Редакция от 1 января 2024 года
+        </p>
+      </div>
+    </div>
+    <div class="container legal-layout">
+      <article class="legal-content glass">
+        <section class="legal-section" id="section-1">
+          <h2>1. Общие положения</h2>
+          <p>Настоящая Политика конфиденциальности (далее - «Политика») определяет порядок обработки информации о пользователях сайта <strong>autoluz.ru</strong> (далее - «Сайт»), принадлежащего индивидуальному предпринимателю Лузянину (далее - «Оператор»).</p>
+          <p>Используя Сайт, вы соглашаетесь с условиями настоящей Политики. Если вы не согласны с Политикой, пожалуйста, прекратите использование Сайта.</p>
+          <p>Настоящий Сайт является визиткой-каталогом и <strong>не собирает персональные данные</strong> через формы. Мы используем только технические cookies и local storage для темы оформления, сохранения согласия и стабильной работы сайта, без рекламных и аналитических трекеров.</p>
+        </section>
+        <section class="legal-section" id="section-2">
+          <h2>2. Какие данные мы не собираем</h2>
+          <p>Сайт намеренно спроектирован без:</p>
+          <ul>
+            <li>Форм регистрации и обратной связи</li>
+            <li>Систем аналитики (Google Analytics, Яндекс.Метрика и др.)</li>
+            <li>Рекламных трекеров и пикселей</li>
+            <li>Файлов cookies для рекламного и аналитического отслеживания</li>
+            <li>Сторонних виджетов, собирающих данные</li>
+          </ul>
+          <p>Подробные условия использования технических cookies и local storage описаны в <a href="/cookies">Политике cookies</a>.</p>
+        </section>
+        <section class="legal-section" id="section-3">
+          <h2>3. Данные при звонке и письме</h2>
+          <p>При использовании ссылки <strong>tel:</strong> (звонок) или <strong>mailto:</strong> (электронная почта) передача данных происходит через ваше устройство напрямую к Оператору. Эти данные обрабатываются исключительно для:</p>
+          <ul>
+            <li>Ответа на ваш запрос</li>
+            <li>Расчёта стоимости перевозки</li>
+            <li>Заключения договора (при необходимости)</li>
+          </ul>
+          <p>Данные не передаются третьим лицам без вашего согласия.</p>
+        </section>
+        <section class="legal-section" id="section-4">
+          <h2>4. Карта (Leaflet / OpenStreetMap)</h2>
+          <p>На Сайте используется интерактивная карта на основе библиотеки Leaflet с тайлами CARTO. При загрузке карты ваш браузер обращается к серверам CARTO для получения изображений карты. При этом могут передаваться технические данные (IP-адрес, User-Agent). Обработка этих данных регулируется <a href="https://carto.com/privacy/" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности CARTO</a>.</p>
+        </section>
+        <section class="legal-section" id="section-5">
+          <h2>5. Service Worker и локальный кэш</h2>
+          <p>Сайт использует Service Worker для кэширования страниц в вашем браузере (технология PWA). Данные кэша хранятся <strong>локально на вашем устройстве</strong> и не передаются Оператору.</p>
+        </section>
+        <section class="legal-section" id="section-6">
+          <h2>6. Шрифты</h2>
+          <p>Сайт загружает иконки Material Symbols с серверов Google Fonts. При этом Google может получать технические данные запроса. Обработка регулируется <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности Google</a>.</p>
+        </section>
+        <section class="legal-section" id="section-7">
+          <h2>7. Права пользователей</h2>
+          <p>Поскольку Сайт не собирает персональные данные активно, большинство прав субъекта персональных данных (доступ, исправление, удаление) неприменимы. Однако если вы направили нам письмо или звонили, вы вправе:</p>
+          <ul>
+            <li>Запросить информацию об обрабатываемых данных</li>
+            <li>Потребовать прекращения обработки</li>
+            <li>Потребовать удаления ваших данных</li>
+          </ul>
+          <p>Для реализации прав обращайтесь: <a href="mailto:info@autoluz.ru">info@autoluz.ru</a></p>
+        </section>
+        <section class="legal-section" id="section-8">
+          <h2>8. Изменения Политики</h2>
+          <p>Оператор вправе вносить изменения в Политику. Актуальная версия всегда доступна по адресу <strong>autoluz.ru/privacy</strong>. Дата последнего изменения указана в заголовке документа.</p>
+        </section>
+        <section class="legal-section" id="section-9">
+          <h2>9. Контакты</h2>
+          <p>По вопросам, связанным с обработкой данных:</p>
+          <div class="legal-contacts">
+            <a href="tel:+78432000000" class="legal-contact-link">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+              +7 (843) 200-00-00
+            </a>
+            <a href="mailto:info@autoluz.ru" class="legal-contact-link">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+              info@autoluz.ru
+            </a>
+          </div>
+        </section>
+      </article>
+      <aside class="legal-sidebar">
+        <div class="legal-nav glass">
+          <h3 class="legal-nav-title">
+            <span class="material-symbols-outlined" aria-hidden="true">toc</span>
+            Содержание
+          </h3>
+          <nav aria-label="Содержание документа">
+            <ul class="legal-nav-list">
+              {[
+                '1. Общие положения',
+                '2. Данные которые не собираем',
+                '3. Данные при звонке и письме',
+                '4. Карта',
+                '5. Service Worker',
+                '6. Шрифты',
+                '7. Права пользователей',
+                '8. Изменения Политики',
+                '9. Контакты',
+              ].map((item, i) => (
+                <li>
+                  <a href={`#section-${i+1}`} class="legal-nav-link">
+                    <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+        <a href="/" class="btn-primary legal-back-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          На главную
+        </a>
+        <a href="/offer" class="btn-secondary legal-offer-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">gavel</span>
+          Публичная оферта
+        </a>
+      </aside>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<style>
+  .legal-page { min-height: 100vh; }
+  .legal-hero {
+    background: var(--gradient-hero);
+    padding: 130px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .legal-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(26,86,219,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .legal-title {
+    color: white;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .legal-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.55);
+    position: relative;
+    z-index: 1;
+  }
+  .legal-date .material-symbols-outlined { font-size: 1rem; }
+  .legal-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 80px;
+    align-items: start;
+  }
+  .legal-content {
+    border-radius: var(--radius-lg);
+    padding: 48px 52px;
+  }
+  .legal-section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .legal-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .legal-section h2 {
+    font-size: 1.25rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .legal-section h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1.1em;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legal-section p {
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  .legal-section ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 16px;
+  }
+  .legal-section ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .legal-section ul li::before {
+    content: 'check_circle';
+    font-family: 'Material Symbols Outlined';
+    color: var(--accent);
+    font-size: 1rem;
+    font-variation-settings: 'FILL' 1;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .legal-section a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .legal-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    font-weight: var(--font-semibold);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+  }
+  .legal-contact-link .material-symbols-outlined { color: var(--accent); }
+  .legal-contact-link:hover { border-color: var(--accent); background: rgba(26,86,219,0.06); }
+  .legal-sidebar {
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .legal-nav {
+    padding: 20px;
+    border-radius: var(--radius-md);
+  }
+  .legal-nav-title {
+    font-size: 0.82rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legal-nav-title .material-symbols-outlined { color: var(--accent); font-size: 1rem; }
+  .legal-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .legal-nav-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 7px 8px;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    line-height: 1.35;
+  }
+  .legal-nav-link .material-symbols-outlined {
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--accent);
+    opacity: 0.5;
+  }
+  .legal-nav-link:hover {
+    background: rgba(26,86,219,0.06);
+    color: var(--accent);
+  }
+  .legal-nav-link:hover .material-symbols-outlined { opacity: 1; }
+  .legal-back-btn, .legal-offer-btn {
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  @media (max-width: 860px) {
+    .legal-layout { grid-template-columns: 1fr; }
+    .legal-sidebar { position: static; }
+    .legal-content { padding: 32px 24px; }
+  }
+  @media (max-width: 480px) {
+    .legal-content { padding: 24px 16px; }
+    .legal-hero { padding: 110px 0 40px; }
+  }
+</style>

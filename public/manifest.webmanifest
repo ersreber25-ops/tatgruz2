@@ -1,0 +1,39 @@
+{
+  "name": "Автопарк Лузянина",
+  "short_name": "Лузянина",
+  "description": "Грузоперевозки по Казани, Татарстану и европейской части России. Mercedes Sprinter Classic.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1a31",
+  "theme_color": "#1a56db",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "transportation"],
+  "lang": "ru-RU",
+  "shortcuts": [
+    {
+      "name": "Позвонить",
+      "url": "tel:+78432000000",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

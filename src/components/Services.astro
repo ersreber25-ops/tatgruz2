@@ -1,0 +1,420 @@
+---
+import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const services = [
+  { key: 'service_1', icon: 'apartment', color: '#1a56db', glow: 'rgba(26,86,219,0.3)' },
+  { key: 'service_2', icon: 'business_center', color: '#7c3aed', glow: 'rgba(124,58,237,0.3)' },
+  { key: 'service_3', icon: 'construction', color: '#059669', glow: 'rgba(5,150,105,0.3)' },
+  { key: 'service_4', icon: 'route', color: '#dc2626', glow: 'rgba(220,38,38,0.3)' },
+  { key: 'service_5', icon: 'savings', color: '#d97706', glow: 'rgba(217,119,6,0.3)' },
+  { key: 'service_6', icon: 'bolt', color: '#0891b2', glow: 'rgba(8,145,178,0.3)' },
+] as const;
+---
+<section class="section services-section" id="services" aria-labelledby="services-heading">
+  <div class="services-bg" aria-hidden="true">
+    <div class="services-bg-orb orb-a"></div>
+    <div class="services-bg-orb orb-b"></div>
+  </div>
+  <div class="container">
+    <div class="section-header" data-reveal>
+      <div class="chip chip-accent section-chip">
+        <span class="material-symbols-outlined" aria-hidden="true">category</span>
+        {t(lang, 'services_chip')}
+      </div>
+      <h2 class="heading-lg services-title" id="services-heading">
+        {t(lang, 'services_title')}
+      </h2>
+      <p class="services-subtitle" data-reveal data-delay="1">
+        {t(lang, 'services_subtitle')}
+      </p>
+    </div>
+    <div class="services-bento" role="list">
+      {services.map((s, i) => (
+        <a
+          href={`/services/${s.key}`}
+          class="service-card glass"
+          role="listitem"
+          style={`--card-color: ${s.color}; --card-glow: ${s.glow};`}
+          data-reveal={i % 2 === 0 ? 'left' : 'right'}
+          data-delay={String((i % 3) + 1)}
+        >
+          <div class="card-glow-bg" aria-hidden="true"></div>
+          <div class="card-icon-wrap">
+            <span class="material-symbols-outlined card-icon icon-filled" aria-hidden="true">
+              {s.icon}
+            </span>
+            <div class="card-icon-ring" aria-hidden="true"></div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title heading-md">
+              {t(lang, `${s.key}_title` as any)}
+            </h3>
+            <p class="card-desc">
+              {t(lang, `${s.key}_desc` as any)}
+            </p>
+          </div>
+          <div class="card-cta">
+            <span class="material-symbols-outlined" aria-hidden="true">call</span>
+            <span>Узнать стоимость</span>
+            <span class="material-symbols-outlined card-arrow" aria-hidden="true">arrow_forward</span>
+          </div>
+          <div class="card-number" aria-hidden="true">0{i + 1}</div>
+        </a>
+      ))}
+    </div>
+    <div class="services-facts-shell" data-reveal data-delay="2">
+      <button
+        class="facts-scroll-btn facts-scroll-btn--prev"
+        type="button"
+        id="services-facts-prev"
+        aria-label="Прокрутить преимущества влево"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+      </button>
+      <div class="services-facts" id="services-facts" aria-label="Преимущества работы с нами">
+        {[
+          { icon: 'payments', text: 'Оплата наличными или переводом' },
+          { icon: 'description', text: 'Работа по публичной оферте' },
+          { icon: 'inventory_2', text: 'Помогаем с упаковкой' },
+          { icon: 'support_agent', text: 'Быстрая оценка заявки' },
+        ].map(f => (
+          <div class="fact-item">
+            <span class="material-symbols-outlined fact-icon icon-filled" aria-hidden="true">{f.icon}</span>
+            <span class="fact-text">{f.text}</span>
+          </div>
+        ))}
+      </div>
+      <button
+        class="facts-scroll-btn facts-scroll-btn--next"
+        type="button"
+        id="services-facts-next"
+        aria-label="Прокрутить преимущества вправо"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</section>
+<script is:inline>
+  (function() {
+    const rail = document.getElementById('services-facts');
+    const prevBtn = document.getElementById('services-facts-prev');
+    const nextBtn = document.getElementById('services-facts-next');
+    if (!rail || !prevBtn || !nextBtn) return;
+    const updateButtons = () => {
+      const maxScroll = rail.scrollWidth - rail.clientWidth - 2;
+      prevBtn.toggleAttribute('disabled', rail.scrollLeft <= 2);
+      nextBtn.toggleAttribute('disabled', rail.scrollLeft >= maxScroll);
+    };
+    const scrollByCard = (direction) => {
+      const card = rail.querySelector('.fact-item');
+      const step = card ? card.getBoundingClientRect().width + 12 : 260;
+      rail.scrollBy({ left: direction * step, behavior: 'smooth' });
+    };
+    prevBtn.addEventListener('click', () => scrollByCard(-1));
+    nextBtn.addEventListener('click', () => scrollByCard(1));
+    rail.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons);
+    updateButtons();
+  })();
+</script>
+<style>
+  .services-section {
+    background: var(--gradient-section);
+    position: relative;
+    overflow: hidden;
+  }
+  .services-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .services-bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+  }
+  .orb-a {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(26, 86, 219, 0.08) 0%, transparent 70%);
+    top: -200px;
+    left: -200px;
+  }
+  .orb-b {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+    bottom: -150px;
+    right: -100px;
+  }
+  .section-header {
+    margin-bottom: 48px;
+    max-width: 600px;
+  }
+  .section-chip {
+    margin-bottom: 16px;
+  }
+  .services-title {
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  .services-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+  .services-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .service-card {
+    position: relative;
+    padding: 28px 24px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+    cursor: default;
+    border: 1px solid var(--border);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    background: var(--gradient-card);
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--card-color, #1a56db) 6%, transparent) 0%,
+      transparent 60%
+    );
+    transition: opacity var(--transition);
+    opacity: 0;
+    border-radius: inherit;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px var(--card-glow, rgba(26, 86, 219, 0.2));
+    border-color: var(--card-color, var(--border-strong));
+  }
+  .service-card:hover::before {
+    opacity: 1;
+  }
+  .card-glow-bg {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--card-glow, rgba(26, 86, 219, 0.2)) 0%, transparent 70%);
+    transition: transform var(--transition);
+    pointer-events: none;
+  }
+  .service-card:hover .card-glow-bg {
+    transform: scale(1.5);
+  }
+  .card-icon-wrap {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+  .card-icon {
+    font-size: 2rem;
+    color: var(--card-color, var(--accent));
+    position: relative;
+    z-index: 1;
+    transition: transform var(--transition);
+  }
+  .service-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  .card-icon-ring {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--card-color, var(--accent));
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all var(--transition);
+  }
+  .service-card:hover .card-icon-ring {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  .card-body {
+    flex: 1;
+  }
+  .card-title {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+  }
+  .card-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: var(--font-semibold);
+    color: var(--card-color, var(--accent));
+    text-decoration: none;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    transition: gap var(--transition-fast), opacity var(--transition-fast);
+  }
+  .card-cta .material-symbols-outlined {
+    font-size: 1rem;
+  }
+  .card-arrow {
+    margin-left: auto;
+    transition: transform var(--transition-fast);
+  }
+  .card-cta:hover .card-arrow {
+    transform: translateX(4px);
+  }
+  .card-number {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-size: 3.5rem;
+    font-weight: var(--font-semibold);
+    color: var(--card-color, var(--accent));
+    opacity: 0.06;
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: -0.04em;
+    transition: opacity var(--transition);
+  }
+  .service-card:hover .card-number {
+    opacity: 0.12;
+  }
+  .services-facts-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .services-facts {
+    display: flex;
+    gap: 0;
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+  .facts-scroll-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-glass-strong);
+    color: var(--text-primary);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: opacity var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+    flex-shrink: 0;
+  }
+  .facts-scroll-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
+  }
+  .facts-scroll-btn[disabled] {
+    opacity: 0.35;
+    cursor: default;
+    transform: none;
+  }
+  .facts-scroll-btn .material-symbols-outlined {
+    font-size: 1.2rem;
+  }
+  .fact-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    position: relative;
+    transition: background var(--transition-fast);
+  }
+  .fact-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: var(--border);
+  }
+  .fact-item:hover {
+    background: rgba(26, 86, 219, 0.05);
+  }
+  .fact-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .fact-text {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+  @media (max-width: 1100px) {
+    .services-bento {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .services-bento {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .services-facts-shell {
+      margin-top: 24px;
+      padding-inline: 2px;
+      gap: 8px;
+    }
+    .services-facts {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      border-radius: 20px;
+      touch-action: pan-x;
+    }
+    .services-facts::-webkit-scrollbar {
+      display: none;
+    }
+    .fact-item {
+      flex: 0 0 82%;
+      min-width: 250px;
+      padding: 18px 18px;
+      scroll-snap-align: start;
+    }
+    .fact-item:not(:last-child)::after {
+      display: none;
+    }
+    .facts-scroll-btn {
+      display: inline-flex;
+    }
+  }
+  @media (max-width: 480px) {
+    .services-bento {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

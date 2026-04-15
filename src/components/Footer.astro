@@ -1,0 +1,733 @@
+---
+import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const base = lang === 'tt' ? '/tt' : '';
+const currentYear = new Date().getFullYear();
+const navLinks = [
+  { label: t(lang, 'nav_home'), href: base + '/', icon: 'home' },
+  { label: t(lang, 'nav_services'), href: base + '/#services', icon: 'local_shipping' },
+  { label: t(lang, 'nav_map'), href: base + '/#map', icon: 'map' },
+  { label: t(lang, 'nav_about'), href: base + '/#why', icon: 'verified' },
+  { label: t(lang, 'nav_blog'), href: base + '/blog', icon: 'article' },
+  { label: t(lang, 'nav_contacts'), href: base + '/#contacts', icon: 'call' },
+] as const;
+---
+<footer class="site-footer" role="contentinfo" aria-label="Подвал сайта">
+  <div class="truck-track" aria-hidden="true" id="truck-track">
+    <div class="track-road">
+      <div class="track-dashes"></div>
+    </div>
+    <div class="truck-runner" id="truck-runner">
+      <img
+        src="/images/sprinter-side.png"
+        alt=""
+        class="runner-img"
+        width="160"
+        height="80"
+        loading="lazy"
+      />
+      <div class="runner-wheels">
+        <div class="wheel wheel-front"></div>
+        <div class="wheel wheel-rear"></div>
+      </div>
+      <div class="exhaust">
+        <div class="smoke smoke-1"></div>
+        <div class="smoke smoke-2"></div>
+        <div class="smoke smoke-3"></div>
+      </div>
+      <div class="truck-tip glass">
+        <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+        {t(lang, 'truck_tooltip')}
+      </div>
+    </div>
+  </div>
+  <div class="footer-main">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href={base + '/'} class="footer-logo" aria-label="Автопарк Лузянина - на главную">
+          <div class="footer-logo-mark">
+            <svg width="40" height="40" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <rect width="36" height="36" rx="10" fill="url(#footer-logo-grad)"/>
+              <path d="M6 24 L6 16 L12 10 L24 10 L30 16 L30 24 Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="11" cy="25" r="3" fill="white"/>
+              <circle cx="25" cy="25" r="3" fill="white"/>
+              <path d="M14 24 L22 24" stroke="white" stroke-width="2"/>
+              <path d="M12 17 L24 17" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+              <defs>
+                <linearGradient id="footer-logo-grad" x1="0" y1="0" x2="36" y2="36">
+                  <stop offset="0%" stop-color="#1a56db"/>
+                  <stop offset="100%" stop-color="#7c3aed"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="footer-logo-text">
+            <span class="footer-logo-name">Автопарк</span>
+            <span class="footer-logo-surname">Лузянина</span>
+          </div>
+        </a>
+        <p class="footer-tagline">
+          {t(lang, 'footer_tagline')}
+        </p>
+        <div class="footer-contacts">
+          <a href="tel:+78432000000" class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+            </div>
+            <div>
+              <div class="footer-contact-label">{t(lang, 'contacts_phone_label')}</div>
+              <div class="footer-contact-value">+7 (843) 200-00-00</div>
+            </div>
+          </a>
+          <a href="mailto:info@autoluz.ru" class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+            </div>
+            <div>
+              <div class="footer-contact-label">{t(lang, 'contacts_email_label')}</div>
+              <div class="footer-contact-value">info@autoluz.ru</div>
+            </div>
+          </a>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">location_on</span>
+            </div>
+            <div>
+              <div class="footer-contact-label">{t(lang, 'contacts_address_label')}</div>
+              <div class="footer-contact-value">{t(lang, 'contacts_address_value')}</div>
+            </div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">schedule</span>
+            </div>
+            <div>
+              <div class="footer-contact-label">{t(lang, 'contacts_schedule_label')}</div>
+              <div class="footer-contact-value">{t(lang, 'contacts_schedule_value')}</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-cta-row">
+          <a href="tel:+78432000000" class="btn-primary footer-call-btn">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+            {t(lang, 'contacts_call_btn')}
+          </a>
+          <a href="mailto:info@autoluz.ru" class="btn-secondary footer-mail-btn">
+            <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+            {t(lang, 'contacts_mail_btn')}
+          </a>
+        </div>
+      </div>
+      <nav class="footer-nav-col" aria-label="Навигация в подвале">
+        <h3 class="footer-col-title">
+          <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+          {t(lang, 'footer_links_title')}
+        </h3>
+        <ul class="footer-nav-list" role="list">
+          {navLinks.map(link => (
+            <li>
+              <a href={link.href} class="footer-nav-link">
+                <span class="material-symbols-outlined footer-nav-icon" aria-hidden="true">{link.icon}</span>
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div class="footer-legal-col">
+        <h3 class="footer-col-title">
+          <span class="material-symbols-outlined" aria-hidden="true">folder_open</span>
+          {t(lang, 'footer_legal_title')}
+        </h3>
+        <ul class="footer-nav-list" role="list">
+          <li>
+            <a href="/privacy" class="footer-nav-link">
+              <span class="material-symbols-outlined footer-nav-icon" aria-hidden="true">shield</span>
+              {t(lang, 'footer_privacy')}
+            </a>
+          </li>
+          <li>
+            <a href="/cookies" class="footer-nav-link">
+              <span class="material-symbols-outlined footer-nav-icon" aria-hidden="true">cookie</span>
+              Политика cookies
+            </a>
+          </li>
+          <li>
+            <a href="/offer" class="footer-nav-link">
+              <span class="material-symbols-outlined footer-nav-icon" aria-hidden="true">gavel</span>
+              {t(lang, 'footer_offer')}
+            </a>
+          </li>
+        </ul>
+        <div class="footer-pwa-hint glass">
+          <span class="material-symbols-outlined pwa-hint-icon" aria-hidden="true">install_mobile</span>
+          <div>
+            <div class="pwa-hint-title">Добавить на экран</div>
+            <div class="pwa-hint-desc">Быстрый доступ с телефона</div>
+          </div>
+          <button onclick="installPWA()" class="pwa-hint-btn" aria-label="Установить приложение">
+            <span class="material-symbols-outlined" aria-hidden="true">add</span>
+          </button>
+        </div>
+        <div class="footer-truck-decor" aria-hidden="true">
+          <img
+            src="/images/sprinter-front.png"
+            alt=""
+            class="footer-truck-decor-img"
+            width="200"
+            height="240"
+            loading="lazy"
+          />
+          <div class="footer-truck-glow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <div class="footer-bottom-left">
+        <p class="footer-rights">
+          {lang === 'tt'
+            ? `© ${currentYear} Luzianin Autoparky. Barlyk hokuklar saklangan.`
+            : `© ${currentYear} Автопарк Лузянина. Все права защищены.`}
+        </p>
+        <p class="footer-inn">{t(lang, 'footer_inn')}</p>
+      </div>
+      <div class="footer-bottom-right">
+        <div class="footer-lang">
+          <a
+            href={lang === 'ru' ? '/' : '/'}
+            class={`footer-lang-btn ${lang === 'ru' ? 'active' : ''}`}
+            hreflang="ru"
+          >РУС</a>
+          <a
+            href={lang === 'tt' ? '/tt/' : '/tt/'}
+            class={`footer-lang-btn ${lang === 'tt' ? 'active' : ''}`}
+            hreflang="tt"
+          >ТАТ</a>
+        </div>
+        <button
+          class="footer-theme-btn"
+          onclick="document.getElementById('theme-toggle')?.click()"
+          aria-label="Переключить тему"
+        >
+          <span class="material-symbols-outlined theme-icon-light" aria-hidden="true">light_mode</span>
+          <span class="material-symbols-outlined theme-icon-dark" aria-hidden="true">dark_mode</span>
+        </button>
+        <button class="footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Вернуться наверх">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</footer>
+<script is:inline>
+(function() {
+  const track = document.getElementById('truck-track');
+  const runner = document.getElementById('truck-runner');
+  if (!track || !runner) return;
+  let position = -200;
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+  const wheels = runner.querySelector('.runner-wheels');
+  const exhaust = runner.querySelector('.exhaust');
+  if (wheels) wheels.style.display = 'none';
+  if (exhaust) exhaust.style.display = 'none';
+  function setTruckPosition() {
+    const trackWidth = track.offsetWidth;
+    if (position > trackWidth + 10) position = -200;
+    if (position < -200) position = trackWidth + 10;
+    runner.style.transform = `translateX(${position}px)`;
+  }
+  runner.style.opacity = '0.3';
+  runner.style.transition = 'opacity 0.6s ease';
+  let scrollTimer = null;
+  let isScrolling = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollY;
+        if (Math.abs(delta) > 0) {
+          isScrolling = true;
+          runner.style.opacity = '1';
+          if (delta > 0) {
+            runner.style.transform = `translateX(${position}px) scaleX(1)`;
+            position += Math.abs(delta) * 0.4;
+          } else {
+            runner.style.transform = `translateX(${position}px) scaleX(-1)`;
+            position -= Math.abs(delta) * 0.4;
+          }
+          const trackWidth = track.offsetWidth;
+          if (position > trackWidth + 10) position = -200;
+          if (position < -200) position = trackWidth + 10;
+          runner.style.transform = `translateX(${position}px) scaleX(${delta > 0 ? 1 : -1})`;
+        }
+        lastScrollY = currentScrollY;
+        ticking = false;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() {
+          isScrolling = false;
+          runner.style.opacity = '0.3';
+        }, 300);
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+  runner.addEventListener('mouseenter', function() {
+    runner.style.opacity = '1';
+  });
+  runner.addEventListener('mouseleave', function() {
+    if (!isScrolling) runner.style.opacity = '0.3';
+  });
+  setTruckPosition();
+})();
+</script>
+<style>
+  .site-footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gradient-accent);
+    opacity: 0.4;
+  }
+  .truck-track {
+    position: relative;
+    height: 90px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-primary);
+  }
+  .track-road {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.25));
+    border-top: 2px solid rgba(255,255,255,0.06);
+  }
+  .track-dashes {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 200%;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.25) 0px,
+      rgba(255,255,255,0.25) 40px,
+      transparent 40px,
+      transparent 80px
+    );
+    animation: dashes-scroll 1.2s linear infinite;
+  }
+  @keyframes dashes-scroll {
+    from { transform: translateY(-50%) translateX(0); }
+    to { transform: translateY(-50%) translateX(-80px); }
+  }
+  .truck-runner {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    width: 160px;
+    height: 68px;
+    will-change: transform, opacity;
+    transition: opacity 0.8s ease;
+    cursor: pointer;
+  }
+  .runner-img {
+    width: 160px;
+    height: 68px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 16px rgba(26,86,219,0.3));
+    display: block;
+  }
+  .runner-wheels {
+    display: none !important;
+  }
+  .wheel {
+    display: none !important;
+  }
+  .wheel-front { right: 14px; }
+  .wheel-rear { left: 22px; }
+  @keyframes wheel-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .exhaust {
+    display: none !important;
+  }
+  .smoke {
+    display: none !important;
+  }
+  .smoke-1 { animation-delay: 0s; }
+  .smoke-2 { animation-delay: 0.3s; width: 14px; height: 14px; }
+  .smoke-3 { animation-delay: 0.6s; width: 8px; height: 8px; }
+  @keyframes smoke-puff {
+    0% { opacity: 0.6; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-20px) scale(2.5); }
+  }
+  .truck-tip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: var(--shadow-md);
+  }
+  .truck-runner:hover .truck-tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  .truck-tip .material-symbols-outlined { font-size: 1rem; color: var(--accent); }
+  .footer-main {
+    padding: 64px 0 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    margin-bottom: 16px;
+    width: fit-content;
+    transition: opacity var(--transition-fast);
+  }
+  .footer-logo:hover { opacity: 0.8; }
+  .footer-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .footer-logo-name {
+    font-size: 0.72rem;
+    font-weight: var(--font-regular);
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer-logo-surname {
+    font-size: 1.1rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+  .footer-tagline {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 28px;
+    max-width: 320px;
+  }
+  .footer-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--transition-fast);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+  }
+  a.footer-contact-item:hover {
+    background: rgba(26,86,219,0.06);
+    border-color: var(--border);
+    opacity: 1;
+  }
+  .footer-contact-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(26,86,219,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .footer-contact-icon .material-symbols-outlined {
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+  .footer-contact-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: var(--font-semibold);
+    margin-bottom: 2px;
+  }
+  .footer-contact-value {
+    font-size: 0.9rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+  .footer-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .footer-call-btn, .footer-mail-btn {
+    font-size: 0.9rem;
+    padding: 11px 20px;
+  }
+  .footer-col-title {
+    font-size: 0.78rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-col-title .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--accent);
+  }
+  .footer-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .footer-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+  }
+  .footer-nav-link:hover {
+    color: var(--accent);
+    background: rgba(26,86,219,0.06);
+    border-color: var(--border);
+    padding-left: 16px;
+  }
+  .footer-nav-icon {
+    font-size: 1rem;
+    color: var(--accent);
+    opacity: 0.6;
+    flex-shrink: 0;
+    transition: opacity var(--transition-fast);
+  }
+  .footer-nav-link:hover .footer-nav-icon { opacity: 1; }
+  .footer-pwa-hint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+  .pwa-hint-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .pwa-hint-title {
+    font-size: 0.85rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+  .pwa-hint-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .pwa-hint-btn {
+    margin-left: auto;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-strong);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+  .pwa-hint-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .footer-truck-decor {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .footer-truck-decor-img {
+    width: 140px;
+    height: auto;
+    opacity: 0.18;
+    filter: var(--blur-heavy);
+    transform: scale(1.1);
+    transition: opacity var(--transition);
+    pointer-events: none;
+  }
+  .footer-truck-glow {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.15;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    background: var(--bg-primary);
+  }
+  .footer-bottom-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .footer-rights {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .footer-inn {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  .footer-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-lang {
+    display: flex;
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .footer-lang-btn {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: var(--font-semibold);
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  .footer-lang-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+  .footer-theme-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-dark-card);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+  }
+  .footer-theme-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+  }
+  .footer-theme-btn .theme-icon-dark { display: none; }
+  [data-theme="dark"] .footer-theme-btn .theme-icon-light { display: none; }
+  [data-theme="dark"] .footer-theme-btn .theme-icon-dark { display: block; }
+  .footer-top-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-dark-card);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+  }
+  .footer-top-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-brand { grid-column: span 2; }
+    .footer-truck-decor { display: none; }
+  }
+  @media (max-width: 640px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-brand { grid-column: span 1; }
+    .footer-cta-row { flex-direction: column; }
+    .footer-call-btn, .footer-mail-btn { width: 100%; justify-content: center; }
+    .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .truck-track { height: 70px; }
+    .runner-img { width: 120px; height: 52px; }
+    .truck-runner { width: 120px; height: 52px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track-dashes { animation: none; }
+    .wheel { animation: none; }
+    .smoke { animation: none; }
+  }
+</style>

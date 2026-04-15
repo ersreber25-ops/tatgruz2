@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../i18n/index';
+const lang: Lang = 'ru';
+const allPosts = await getCollection('blog');
+const sorted = allPosts.sort((a, b) =>
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+const categories = [...new Set(sorted.map(p => p.data.category))];
+function formatDate(d: Date) {
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(d);
+}
+---
+<BaseLayout
+  lang={lang}
+  title="Блог о грузоперевозках - Автопарк Лузянина"
+  description="Полезные статьи о грузоперевозках, переездах, упаковке грузов и логистике от Автопарка Лузянина в Казани."
+>
+  <Header lang={lang} currentPath="/blog" />
+  <main id="main-content" class="blog-page">
+    <div class="blog-page-hero">
+      <div class="blog-page-hero-bg" aria-hidden="true">
+        <div class="hero-orb"></div>
+      </div>
+      <div class="container blog-page-hero-inner">
+        <div class="chip chip-accent" style="margin-bottom:16px">
+          <span class="material-symbols-outlined" aria-hidden="true">article</span>
+          Блог
+        </div>
+        <h1 class="heading-xl blog-page-title">
+          Блог о <span class="text-accent">грузоперевозках</span>
+        </h1>
+        <p class="blog-page-subtitle">
+          {sorted.length} статей о переездах, упаковке, маршрутах и логистике
+        </p>
+        <div class="blog-filters" role="group" aria-label="Фильтр по категориям">
+          <button class="filter-btn active" data-filter="all" onclick="filterBlog('all', this)">
+            <span class="material-symbols-outlined" aria-hidden="true">apps</span>
+            Все
+          </button>
+          {categories.map(cat => (
+            <button
+              class="filter-btn"
+              data-filter={cat}
+              onclick={`filterBlog('${cat}', this)`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="container blog-page-grid-wrap">
+      <div class="blog-page-grid" id="blog-grid">
+        {sorted.map((post, i) => (
+          <article
+            class="blog-page-card glass"
+            data-reveal="scale"
+            data-delay={String((i % 3) + 1)}
+            data-category={post.data.category}
+          >
+            <a href={`/blog/${post.id}`} class="blog-page-card-img-wrap" aria-hidden="true" tabindex="-1">
+              <img
+                src="/images/blog/placeholder.svg"
+                alt=""
+                class="blog-page-card-img"
+                width="400"
+                height="225"
+                loading={i < 6 ? 'eager' : 'lazy'}
+              />
+              <div class="blog-page-card-overlay"></div>
+              {post.data.featured && (
+                <div class="blog-page-featured-badge">
+                  <span class="material-symbols-outlined" aria-hidden="true">star</span>
+                </div>
+              )}
+            </a>
+            <div class="blog-page-card-body">
+              <div class="blog-page-card-meta">
+                <span class="chip chip-accent blog-page-cat">{post.data.category}</span>
+                <span class="blog-page-read">
+                  <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+                  {post.data.readTime} мин
+                </span>
+              </div>
+              <h2 class="blog-page-card-title">
+                <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              </h2>
+              <p class="blog-page-card-desc">{post.data.description}</p>
+              <div class="blog-page-card-footer">
+                <span class="blog-page-date">
+                  <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+                  {formatDate(post.data.pubDate)}
+                </span>
+                <a href={`/blog/${post.id}`} class="blog-read-link">
+                  Читать
+                  <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<script is:inline>
+function filterBlog(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.blog-page-card').forEach(card => {
+    const cardCat = card.getAttribute('data-category');
+    const show = cat === 'all' || cardCat === cat;
+    card.style.opacity = show ? '1' : '0.25';
+    card.style.transform = show ? '' : 'scale(0.96)';
+    card.style.pointerEvents = show ? '' : 'none';
+  });
+}
+</script>
+<style>
+  .blog-page { min-height: 100vh; }
+  .blog-page-hero {
+    background: var(--gradient-hero);
+    padding: 140px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .blog-page-hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,86,219,0.25) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    filter: blur(60px);
+  }
+  .blog-page-hero-inner { position: relative; z-index: 1; }
+  .blog-page-title {
+    color: white;
+    margin-bottom: 16px;
+  }
+  .blog-page-subtitle {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+  }
+  .blog-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.75);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: var(--font-semibold);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(8px);
+  }
+  .filter-btn .material-symbols-outlined { font-size: 1rem; }
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .blog-page-grid-wrap {
+    padding-top: 48px;
+    padding-bottom: 80px;
+  }
+  .blog-page-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .blog-page-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition), box-shadow var(--transition), opacity 0.3s ease;
+  }
+  .blog-page-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+  .blog-page-card-img-wrap {
+    display: block;
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .blog-page-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .blog-page-card:hover .blog-page-card-img { transform: scale(1.05); }
+  .blog-page-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(10,14,26,0.5) 100%);
+  }
+  .blog-page-featured-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+  }
+  .blog-page-featured-badge .material-symbols-outlined {
+    font-size: 1rem;
+    color: white;
+  }
+  .blog-page-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .blog-page-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .blog-page-cat {
+    font-size: 0.68rem;
+    padding: 3px 10px;
+  }
+  .blog-page-read {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+  .blog-page-read .material-symbols-outlined { font-size: 0.85rem; }
+  .blog-page-card-title {
+    font-size: 1rem;
+    font-weight: var(--font-semibold);
+    line-height: 1.3;
+  }
+  .blog-page-card-title a {
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: color var(--transition-fast);
+  }
+  .blog-page-card-title a:hover { color: var(--accent); }
+  .blog-page-card-desc {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .blog-page-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .blog-page-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .blog-page-date .material-symbols-outlined { font-size: 0.85rem; }
+  .blog-read-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.82rem;
+    font-weight: var(--font-semibold);
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap var(--transition-fast);
+  }
+  .blog-read-link:hover { gap: 8px; }
+  .blog-read-link .material-symbols-outlined { font-size: 0.9rem; }
+  @media (max-width: 900px) {
+    .blog-page-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 580px) {
+    .blog-page-grid { grid-template-columns: 1fr; }
+    .blog-page-hero { padding: 120px 0 48px; }
+  }
+</style>

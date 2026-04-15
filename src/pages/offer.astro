@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/index';
+const lang: Lang = 'ru';
+---
+<BaseLayout
+  lang={lang}
+  title="Публичная оферта - Автопарк Лузянина"
+  description="Публичная оферта на оказание услуг грузоперевозки. Автопарк Лузянина, Казань."
+>
+  <Header lang={lang} currentPath="/offer" />
+  <main id="main-content" class="legal-page">
+    <div class="legal-hero">
+      <div class="container">
+        <div class="chip chip-accent" style="margin-bottom:16px">
+          <span class="material-symbols-outlined" aria-hidden="true">gavel</span>
+          Документ
+        </div>
+        <h1 class="heading-xl legal-title">Публичная<br /><span class="text-accent">оферта</span></h1>
+        <p class="legal-date">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+          Редакция от 1 января 2024 года
+        </p>
+      </div>
+    </div>
+    <div class="container legal-layout">
+      <article class="legal-content glass">
+        <section class="legal-section" id="section-1">
+          <h2>1. Термины и определения</h2>
+          <p><strong>Исполнитель</strong> - ИП Лузянин, осуществляющий деятельность по грузоперевозкам под торговым наименованием «Автопарк Лузянина», г. Казань, Республика Татарстан.</p>
+          <p><strong>Заказчик</strong> - физическое или юридическое лицо, принявшее условия настоящей Оферты.</p>
+          <p><strong>Услуга</strong> - перевозка грузов автомобильным транспортом на территории Российской Федерации.</p>
+          <p><strong>Акцепт</strong> - полное и безоговорочное принятие условий Оферты путём совершения конклюдентных действий (звонок, письмо, устное согласование).</p>
+        </section>
+        <section class="legal-section" id="section-2">
+          <h2>2. Предмет договора</h2>
+          <p>Исполнитель обязуется оказать Заказчику услуги по перевозке грузов автомобильным транспортом (Mercedes Sprinter Classic), а Заказчик обязуется оплатить оказанные услуги в соответствии с согласованными условиями.</p>
+          <p>Маршрут, дата, объём груза, стоимость и иные существенные условия согласуются сторонами устно или письменно до начала перевозки.</p>
+        </section>
+        <section class="legal-section" id="section-3">
+          <h2>3. Обязательства Исполнителя</h2>
+          <ul>
+            <li>Подать транспортное средство в согласованное место и время</li>
+            <li>Обеспечить сохранность груза в ходе перевозки</li>
+            <li>Предоставить документы на транспортное средство по требованию</li>
+            <li>Выдать товарно-транспортную накладную</li>
+            <li>Уведомить Заказчика о форс-мажорных обстоятельствах</li>
+            <li>Доставить груз в место назначения в согласованные сроки</li>
+          </ul>
+        </section>
+        <section class="legal-section" id="section-4">
+          <h2>4. Обязательства Заказчика</h2>
+          <ul>
+            <li>Предоставить достоверную информацию о грузе (вес, габариты, характер)</li>
+            <li>Обеспечить доступ к месту погрузки и разгрузки</li>
+            <li>Оплатить услуги в согласованном порядке</li>
+            <li>Уведомить Исполнителя об изменении условий перевозки</li>
+            <li>Не передавать груз третьим лицам без уведомления Исполнителя</li>
+          </ul>
+        </section>
+        <section class="legal-section" id="section-5">
+          <h2>5. Стоимость и оплата</h2>
+          <p>Стоимость услуг определяется индивидуально для каждой перевозки и зависит от: маршрута, расстояния, веса и объёма груза, дополнительных услуг (погрузка/разгрузка, упаковка).</p>
+          <p>Оплата производится наличными денежными средствами или безналичным переводом. Порядок оплаты (предоплата / постоплата) согласуется при оформлении заказа.</p>
+        </section>
+        <section class="legal-section" id="section-6">
+          <h2>6. Ответственность сторон</h2>
+          <p>Исполнитель несёт ответственность за утрату или повреждение груза, принятого к перевозке, в соответствии с действующим законодательством РФ (Устав автомобильного транспорта, ГК РФ).</p>
+          <p>Ответственность Исполнителя ограничена стоимостью утраченного или повреждённого груза, указанной Заказчиком при сдаче груза.</p>
+          <p>Исполнитель не несёт ответственности за задержку доставки вследствие форс-мажорных обстоятельств: дорожно-транспортных происшествий не по вине Исполнителя, стихийных бедствий, действий государственных органов.</p>
+        </section>
+        <section class="legal-section" id="section-7">
+          <h2>7. Претензии и споры</h2>
+          <p>Претензии по качеству услуг принимаются в течение 3 (трёх) календарных дней с момента доставки груза по адресу электронной почты: <a href="mailto:info@autoluz.ru">info@autoluz.ru</a> или по телефону: <a href="tel:+78432000000">+7 (843) 200-00-00</a>.</p>
+          <p>Споры, не урегулированные в претензионном порядке, рассматриваются в суде по месту нахождения Исполнителя (г. Казань) в соответствии с законодательством РФ.</p>
+        </section>
+        <section class="legal-section" id="section-8">
+          <h2>8. Срок действия оферты</h2>
+          <p>Настоящая Оферта вступает в силу с момента публикации на Сайте и действует бессрочно. Исполнитель вправе изменить условия Оферты в одностороннем порядке, опубликовав новую редакцию на Сайте.</p>
+        </section>
+        <section class="legal-section" id="section-9">
+          <h2>9. Контактные данные Исполнителя</h2>
+          <div class="legal-contacts">
+            <a href="tel:+78432000000" class="legal-contact-link">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+              +7 (843) 200-00-00
+            </a>
+            <a href="mailto:info@autoluz.ru" class="legal-contact-link">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+              info@autoluz.ru
+            </a>
+            <div class="legal-contact-link" style="cursor:default">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">location_on</span>
+              г. Казань, Республика Татарстан
+            </div>
+          </div>
+        </section>
+      </article>
+      <aside class="legal-sidebar">
+        <div class="legal-nav glass">
+          <h3 class="legal-nav-title">
+            <span class="material-symbols-outlined" aria-hidden="true">toc</span>
+            Содержание
+          </h3>
+          <nav aria-label="Содержание оферты">
+            <ul class="legal-nav-list">
+              {[
+                '1. Термины и определения',
+                '2. Предмет договора',
+                '3. Обязательства Исполнителя',
+                '4. Обязательства Заказчика',
+                '5. Стоимость и оплата',
+                '6. Ответственность сторон',
+                '7. Претензии и споры',
+                '8. Срок действия',
+                '9. Контактные данные',
+              ].map((item, i) => (
+                <li>
+                  <a href={`#section-${i + 1}`} class="legal-nav-link">
+                    <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+        <a href="/" class="btn-primary legal-back-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          На главную
+        </a>
+        <a href="/privacy" class="btn-secondary legal-offer-btn">
+          <span class="material-symbols-outlined" aria-hidden="true">shield</span>
+          Политика конфиденциальности
+        </a>
+      </aside>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

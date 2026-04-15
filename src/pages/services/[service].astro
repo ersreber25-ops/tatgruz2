@@ -1,0 +1,324 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import type { Lang } from '../../i18n/index';
+import { t } from '../../i18n/index';
+export function getStaticPaths() {
+  return [
+    { params: { service: 'service_1' } },
+    { params: { service: 'service_2' } },
+    { params: { service: 'service_3' } },
+    { params: { service: 'service_4' } },
+    { params: { service: 'service_5' } },
+    { params: { service: 'service_6' } },
+  ];
+}
+const { service } = Astro.params;
+const lang: Lang = 'ru';
+const title = t(lang, `${service}_title` as any);
+const desc = t(lang, `${service}_desc` as any);
+---
+<BaseLayout lang={lang} title={`${title} - Автопарк Лузянина`} description={desc}>
+  <Header lang={lang} />
+  <main id="main-content" class="service-page">
+    <div class="service-hero">
+      <div class="service-hero-bg" aria-hidden="true"></div>
+      <div class="container service-hero-inner">
+        <a href="/#services" class="back-link">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          Все услуги
+        </a>
+        <h1 class="heading-xl service-title">{title}</h1>
+        <p class="service-desc">{desc}</p>
+      </div>
+    </div>
+    <div class="container service-contact-wrap">
+      <div class="service-contact-grid">
+        <a href="tel:+78432000000" class="service-contact-card glass service-contact-card--call">
+          <div class="scc-icon-wrap">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+          </div>
+          <div class="scc-body">
+            <div class="scc-label">Быстрый способ</div>
+            <div class="scc-title">Позвонить</div>
+            <div class="scc-value">+7 (843) 200-00-00</div>
+            <div class="scc-hint">Ответим за 30 секунд · Работаем 24/7</div>
+          </div>
+          <div class="scc-arrow">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </div>
+          <div class="scc-pulse" aria-hidden="true">
+            <div class="pulse-r"></div>
+            <div class="pulse-r pulse-r-2"></div>
+          </div>
+        </a>
+        <a href={`mailto:info@autopark-luzyanina.ru?subject=Запрос на услугу: ${title}`} class="service-contact-card glass service-contact-card--mail">
+          <div class="scc-icon-wrap">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+          </div>
+          <div class="scc-body">
+            <div class="scc-label">Письменный способ</div>
+            <div class="scc-title">Написать на почту</div>
+            <div class="scc-value">info@autopark-luzyanina.ru</div>
+            <div class="scc-hint">Ответим в течение 2 часов</div>
+          </div>
+          <div class="scc-arrow">
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </div>
+        </a>
+      </div>
+      <div class="service-benefits glass">
+        <h2 class="service-benefits-title">
+          <span class="material-symbols-outlined icon-filled" aria-hidden="true">verified</span>
+          Почему выбирают нас
+        </h2>
+        <div class="service-benefits-grid">
+          {[
+            { icon: 'bolt', text: 'Выезд за 2 часа после звонка' },
+            { icon: 'gavel', text: 'Официальный договор сразу' },
+            { icon: 'shield', text: 'Груз застрахован' },
+            { icon: 'price_check', text: 'Фиксированная цена без сюрпризов' },
+            { icon: 'gps_fixed', text: 'GPS-отслеживание в реальном времени' },
+            { icon: 'headset_mic', text: 'Поддержка 24/7' },
+          ].map(b => (
+            <div class="service-benefit-item">
+              <span class="material-symbols-outlined icon-filled sb-icon" aria-hidden="true">{b.icon}</span>
+              <span>{b.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="service-back-row">
+        <a href="/" class="btn-secondary">
+          <span class="material-symbols-outlined" aria-hidden="true">home</span>
+          На главную
+        </a>
+        <a href="/#services" class="btn-secondary">
+          <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+          Все услуги
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<style>
+  .service-page { min-height: 100vh; }
+  .service-hero {
+    background: var(--gradient-hero);
+    padding: 130px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(26,86,219,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .service-hero-inner { position: relative; z-index: 1; }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.88rem;
+    margin-bottom: 24px;
+    transition: color var(--transition-fast);
+  }
+  .back-link:hover { color: white; }
+  .back-link .material-symbols-outlined { font-size: 1.1rem; }
+  .service-title {
+    color: white;
+    margin-bottom: 16px;
+  }
+  .service-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.1rem;
+    line-height: 1.65;
+    max-width: 560px;
+  }
+  .service-contact-wrap {
+    padding-top: 60px;
+    padding-bottom: 80px;
+  }
+  .service-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .service-contact-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 28px;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+    border: 1.5px solid var(--border);
+  }
+  .service-contact-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+  .service-contact-card--call {
+    border-color: rgba(26,86,219,0.35);
+    background: linear-gradient(135deg, rgba(26,86,219,0.08) 0%, var(--bg-card) 100%);
+  }
+  .service-contact-card--call:hover {
+    box-shadow: 0 20px 60px rgba(26,86,219,0.25);
+    border-color: var(--accent);
+  }
+  .service-contact-card--mail {
+    border-color: rgba(124,58,237,0.25);
+    background: linear-gradient(135deg, rgba(124,58,237,0.06) 0%, var(--bg-card) 100%);
+  }
+  .service-contact-card--mail:hover {
+    box-shadow: 0 20px 60px rgba(124,58,237,0.2);
+    border-color: #7c3aed;
+  }
+  .scc-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .service-contact-card--call .scc-icon-wrap {
+    background: rgba(26,86,219,0.15);
+  }
+  .service-contact-card--call .scc-icon-wrap .material-symbols-outlined {
+    font-size: 1.8rem;
+    color: var(--accent);
+  }
+  .service-contact-card--mail .scc-icon-wrap {
+    background: rgba(124,58,237,0.12);
+  }
+  .service-contact-card--mail .scc-icon-wrap .material-symbols-outlined {
+    font-size: 1.8rem;
+    color: #7c3aed;
+  }
+  .scc-body { flex: 1; min-width: 0; }
+  .scc-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: var(--font-semibold);
+    margin-bottom: 6px;
+  }
+  .scc-title {
+    font-size: 1.3rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .scc-value {
+    font-size: 0.95rem;
+    font-weight: var(--font-semibold);
+    color: var(--accent);
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .service-contact-card--mail .scc-value { color: #7c3aed; }
+  .scc-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .scc-arrow {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+  }
+  .service-contact-card:hover .scc-arrow {
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+  .scc-pulse {
+    position: absolute;
+    bottom: 20px;
+    right: 80px;
+    width: 20px;
+    height: 20px;
+  }
+  .pulse-r {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: scc-pulse 2s ease-out infinite;
+    opacity: 0;
+  }
+  .pulse-r-2 { animation-delay: 1s; }
+  @keyframes scc-pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+  .service-benefits {
+    padding: 32px 36px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+  }
+  .service-benefits-title {
+    font-size: 1.1rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .service-benefits-title .material-symbols-outlined { color: var(--accent); }
+  .service-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .service-benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+  }
+  .service-benefit-item:hover {
+    border-color: var(--accent);
+    background: rgba(26,86,219,0.06);
+    color: var(--text-primary);
+  }
+  .sb-icon {
+    font-size: 1.1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .service-back-row {
+    display: flex;
+    gap: 12px;
+  }
+  @media (max-width: 768px) {
+    .service-contact-grid { grid-template-columns: 1fr; }
+    .service-benefits-grid { grid-template-columns: 1fr 1fr; }
+    .scc-pulse { display: none; }
+  }
+  @media (max-width: 480px) {
+    .service-contact-card { flex-direction: column; text-align: center; padding: 24px 20px; }
+    .scc-arrow { display: none; }
+    .service-benefits-grid { grid-template-columns: 1fr; }
+    .service-benefits { padding: 24px 20px; }
+    .service-back-row { flex-direction: column; }
+    .service-back-row a { justify-content: center; }
+  }
+</style>

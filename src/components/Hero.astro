@@ -1,0 +1,643 @@
+---
+import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const stats = [
+  { num: t(lang, 'hero_stat_1_num'), label: t(lang, 'hero_stat_1_label'), icon: 'workspace_premium' },
+  { num: t(lang, 'hero_stat_2_num'), label: t(lang, 'hero_stat_2_label'), icon: 'local_shipping' },
+  { num: t(lang, 'hero_stat_3_num'), label: t(lang, 'hero_stat_3_label'), icon: 'headset_mic' },
+  { num: t(lang, 'hero_stat_4_num'), label: t(lang, 'hero_stat_4_label'), icon: 'shield' },
+] as const;
+---
+<div class="urgency-bar" role="alert" aria-live="polite">
+  <div class="urgency-inner container">
+    <span class="urgency-pulse"></span>
+    <p class="urgency-text">{t(lang, 'urgency_text')}</p>
+    <a href="tel:+78432000000" class="urgency-cta">
+      <span class="material-symbols-outlined" aria-hidden="true">call</span>
+      {t(lang, 'urgency_cta')}
+    </a>
+  </div>
+</div>
+<section class="hero" id="hero" aria-label="Главный экран">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-bg-grid"></div>
+    <div class="hero-bg-orb hero-orb-1"></div>
+    <div class="hero-bg-orb hero-orb-2"></div>
+    <div class="hero-bg-orb hero-orb-3"></div>
+    <div class="road-strip">
+      <div class="road-dashes"></div>
+    </div>
+  </div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <div class="chip chip-accent hero-chip" data-reveal="left">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        {t(lang, 'hero_chip')}
+      </div>
+      <h1 class="hero-heading" data-reveal="left" data-delay="1">
+        <span class="hero-row hero-row-primary">
+          <span class="hero-line hero-line-1">{t(lang, 'hero_title_1')}</span>
+          <span class="hero-line hero-line-accent">{t(lang, 'hero_title_2')}</span>
+        </span>
+        <span class="hero-row hero-row-secondary">
+          <span class="hero-line hero-line-2">{t(lang, 'hero_title_3')}</span>
+          <span class="hero-line hero-line-3">{t(lang, 'hero_title_4')}</span>
+        </span>
+      </h1>
+      <p class="hero-subtitle" data-reveal="left" data-delay="2">
+        {t(lang, 'hero_subtitle')}
+      </p>
+      <div class="hero-cta-group" data-reveal="left" data-delay="3">
+        <a
+          href="tel:+78432000000"
+          class="btn-primary hero-btn-call"
+          aria-label="Позвонить в Автопарк Лузянина: +7 (843) 200-00-00"
+        >
+          <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+          {t(lang, 'hero_cta_call')}
+        </a>
+        <a
+          href="mailto:info@autoluz.ru"
+          class="btn-secondary hero-btn-mail"
+          aria-label="Написать на почту info@autoluz.ru"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+          {t(lang, 'hero_cta_mail')}
+        </a>
+      </div>
+      <div class="hero-trust" data-reveal="left" data-delay="4">
+        <div class="trust-item">
+          <span class="material-symbols-outlined icon-filled trust-icon" aria-hidden="true">verified</span>
+          <span>Договор сразу</span>
+        </div>
+        <div class="trust-item">
+          <span class="material-symbols-outlined icon-filled trust-icon" aria-hidden="true">schedule</span>
+          <span>Выезд за 2 часа</span>
+        </div>
+        <div class="trust-item">
+          <span class="material-symbols-outlined icon-filled trust-icon" aria-hidden="true">security</span>
+          <span>Груз застрахован</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="truck-platform">
+        <div class="truck-glow"></div>
+        <div class="truck-front-wrap">
+          <img
+            src="/images/sprinter-front.png"
+            alt="Mercedes Sprinter Classic - Автопарк Лузянина"
+            class="truck-front-img"
+            width="420"
+            height="500"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="truck-reflection"></div>
+        </div>
+        <div class="badge-float badge-top-left glass" data-reveal="scale" data-delay="3">
+          <span class="material-symbols-outlined badge-icon icon-filled">star</span>
+          <div>
+            <div class="badge-num">4.9</div>
+            <div class="badge-label">Рейтинг</div>
+          </div>
+        </div>
+        <div class="badge-float badge-bottom-right glass" data-reveal="scale" data-delay="4">
+          <span class="material-symbols-outlined badge-icon icon-filled">local_shipping</span>
+          <div>
+            <div class="badge-num">Сегодня</div>
+            <div class="badge-label">Свободен</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats" data-reveal="scale" data-delay="2">
+        {stats.map((s, i) => (
+          <div class="stat-card glass" data-reveal="scale" data-delay={String(i + 2)}>
+            <span class="material-symbols-outlined stat-icon" aria-hidden="true">{s.icon}</span>
+            <div class="stat-num" data-count={s.num.replace(/\D/g, '')} data-suffix={s.num.replace(/[0-9]/g, '').trim()}>
+              {s.num}
+            </div>
+            <div class="stat-label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-hint-line"></div>
+    <span class="material-symbols-outlined">expand_more</span>
+  </div>
+</section>
+<script is:inline>
+  function animateCounters() {
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const target = parseInt(el.getAttribute('data-count'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (!target) return;
+      const duration = 1800;
+      const start = performance.now();
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+        el.textContent = current.toLocaleString('ru-RU') + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        counterObserver.disconnect();
+      }
+    }, { threshold: 0.3 });
+    counterObserver.observe(heroStats);
+  }
+  const truckPlatform = document.querySelector('.truck-platform');
+  if (truckPlatform && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * 8;
+      truckPlatform.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+  }
+</script>
+
+<style>
+  .urgency-bar {
+    background: linear-gradient(90deg, #b45309 0%, #d97706 50%, #b45309 100%);
+    background-size: 200% 100%;
+    animation: urgency-shimmer 3s ease infinite;
+    padding: 10px 0;
+    position: relative;
+    z-index: 990;
+    margin-top: 76px;
+  }
+  @keyframes urgency-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .urgency-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .urgency-pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 0 rgba(255,255,255,0.7);
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  }
+  .urgency-text {
+    color: white;
+    font-size: 0.88rem;
+    font-weight: var(--font-semibold);
+  }
+  .urgency-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 100px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+    transition: background 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .urgency-cta:hover { background: rgba(255,255,255,0.35); }
+  .urgency-cta .material-symbols-outlined { font-size: 1rem; }
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    padding-top: 12px;
+    padding-bottom: 40px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-hero);
+  }
+  .hero-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(26,86,219,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,86,219,0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+  }
+  .hero-orb-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #1a56db 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    animation: orb-float 8s ease-in-out infinite;
+  }
+  .hero-orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+    bottom: -80px;
+    left: 10%;
+    animation: orb-float 12s ease-in-out infinite reverse;
+    opacity: 0.25;
+  }
+  .hero-orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+    top: 30%;
+    left: 30%;
+    animation: orb-float 10s ease-in-out infinite;
+    opacity: 0.12;
+  }
+  @keyframes orb-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20px, -30px) scale(1.05); }
+    66% { transform: translate(-15px, 20px) scale(0.95); }
+  }
+  .road-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .road-dashes {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200%;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.6) 0px,
+      rgba(255,255,255,0.6) 60px,
+      transparent 60px,
+      transparent 120px
+    );
+    animation: road-move 2s linear infinite;
+  }
+  @keyframes road-move {
+    from { transform: translateY(-50%) translateX(0); }
+    to { transform: translateY(-50%) translateX(-120px); }
+  }
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+  .hero-chip {
+    margin-bottom: 18px;
+    font-size: 0.8rem;
+  }
+  .hero-heading {
+    font-weight: var(--font-semibold);
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: white;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .hero-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 16px;
+    align-items: baseline;
+  }
+  .hero-line { display: inline-block; }
+  .hero-line-accent {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-line-2 { color: rgba(255,255,255,0.7); font-size: 0.7em; }
+  .hero-line-3 { color: rgba(255,255,255,0.7); font-size: 0.7em; }
+  .hero-subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: rgba(255,255,255,0.72);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .hero-cta-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+  max-width: 520px;
+  }
+  .hero-btn-call,
+  .hero-btn-mail {
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  }
+  .hero-btn-call {
+    font-size: 1rem;
+    padding: 15px 28px;
+    gap: 10px;
+    box-shadow: var(--shadow-lg), 0 0 60px var(--accent-glow);
+    animation: cta-glow 3s ease-in-out infinite;
+  }
+  @keyframes cta-glow {
+    0%, 100% { box-shadow: var(--shadow-lg), 0 0 30px var(--accent-glow); }
+    50% { box-shadow: var(--shadow-lg), 0 0 60px var(--accent-glow); }
+  }
+  .btn-phone {
+    font-size: 0.82rem;
+    opacity: 0.8;
+    font-weight: var(--font-regular);
+    margin-left: 4px;
+  }
+  .hero-btn-mail {
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.25);
+  }
+  .hero-btn-mail:hover { color: white; border-color: white; background: rgba(255,255,255,0.1); }
+  .hero-trust {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+  }
+  .trust-icon {
+    font-size: 1rem;
+    color: var(--accent-secondary);
+  }
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .truck-platform {
+    position: relative;
+    transition: transform 0.1s ease;
+    transform-style: preserve-3d;
+  }
+  .truck-glow {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 80px;
+    background: var(--accent);
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.4;
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.3; transform: translateX(-50%) scaleX(1); }
+    50% { opacity: 0.5; transform: translateX(-50%) scaleX(1.1); }
+  }
+  .truck-front-wrap {
+    position: relative;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+  }
+  .truck-front-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    animation: truck-hover 4s ease-in-out infinite;
+  }
+  @keyframes truck-hover {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .truck-reflection {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%) scaleY(-0.3);
+    width: 80%;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
+    filter: blur(8px);
+    pointer-events: none;
+  }
+  .badge-float {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    animation: badge-float 3s ease-in-out infinite;
+    z-index: 10;
+    min-width: 120px;
+  }
+  .badge-top-left {
+    top: 10%;
+    left: -30px;
+    animation-delay: -1.5s;
+  }
+  .badge-bottom-right {
+    bottom: 15%;
+    right: -20px;
+  }
+  @keyframes badge-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .badge-icon {
+    font-size: 1.5rem;
+    color: var(--accent-secondary);
+  }
+  .badge-num {
+    font-weight: var(--font-semibold);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .badge-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    transition: transform var(--transition);
+  }
+  .stat-card:hover { transform: translateY(-4px); }
+  .stat-icon {
+    font-size: 1.3rem;
+    color: var(--accent);
+  }
+  .stat-num {
+    font-size: 1.3rem;
+    font-weight: var(--font-semibold);
+    color: white;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.2;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: rgba(255,255,255,0.4);
+    animation: scroll-bounce 2s ease-in-out infinite;
+    z-index: 2;
+  }
+  .scroll-hint-line {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+  }
+  .scroll-hint .material-symbols-outlined {
+    font-size: 1.2rem;
+  }
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+    50% { transform: translateX(-50%) translateY(6px); opacity: 0.7; }
+  }
+  @media (max-width: 900px) {
+    .urgency-bar {
+      margin-top: 72px;
+    }
+    .hero-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding-top: 24px;
+      padding-bottom: 40px;
+      gap: 28px;
+    }
+    .hero-content { order: 1; }
+    .hero-visual { order: 2; }
+    .hero-subtitle { margin: 0 auto 32px; }
+    .hero-cta-group { justify-content: center; }
+    .hero-trust { justify-content: center; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .badge-top-left { left: 0; }
+    .badge-bottom-right { right: 0; }
+    .truck-front-img { max-width: 280px; }
+    .hero-heading {
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-row {
+      justify-content: center;
+    }
+  }
+  @media (max-width: 480px) {
+    .urgency-bar {
+      padding: 8px 0;
+      margin-top: 68px;
+    }
+    .urgency-inner {
+      gap: 10px;
+    }
+    .urgency-text {
+      font-size: 0.8rem;
+    }
+    .hero-heading { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+    .hero {
+      padding-top: 0;
+    }
+    .hero-container {
+      padding-top: 18px;
+      padding-bottom: 28px;
+    }
+    .hero-chip {
+      margin-bottom: 14px;
+    }
+    .hero-heading {
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .btn-phone { display: none; }
+    .hero-btn-call { padding: 13px 20px; }
+    .badge-float { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .truck-front-img,
+    .hero-orb-1, .hero-orb-2, .hero-orb-3,
+    .badge-float,
+    .scroll-hint,
+    .urgency-bar,
+    .road-dashes { animation: none; }
+  }
+</style>

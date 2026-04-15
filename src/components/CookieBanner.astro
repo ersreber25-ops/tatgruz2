@@ -1,0 +1,138 @@
+---
+import type { Lang } from '../i18n/index';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<div class="cookie-banner glass" id="cookie-banner" hidden role="dialog" aria-label="Уведомление об использовании cookies">
+  <div class="cookie-banner__icon">
+    <span class="material-symbols-outlined icon-filled" aria-hidden="true">cookie</span>
+  </div>
+  <div class="cookie-banner__content">
+    <strong class="cookie-banner__title">
+      {lang === 'tt' ? 'Cookies турында хәбәр' : 'Используем технические cookies'}
+    </strong>
+    <p class="cookie-banner__text">
+      {lang === 'tt'
+        ? 'Сайт тема көйләүләрен, ризалыкны һәм карта эшен саклау өчен техник cookies һәм local storage куллана.'
+        : 'Сайт использует cookies и local storage только для темы, сохранения согласия и корректной работы карты.'}
+    </p>
+  </div>
+  <div class="cookie-banner__actions">
+    <a href="/cookies" class="btn-secondary cookie-banner__link">
+      {lang === 'tt' ? 'Сәясәт' : 'Политика cookies'}
+    </a>
+    <button type="button" class="btn-primary cookie-banner__button" id="cookie-banner-accept">
+      {lang === 'tt' ? 'Аңлашылды' : 'Понятно'}
+    </button>
+  </div>
+</div>
+<script is:inline>
+  (function() {
+    const storageKey = 'autoluz-cookie-consent';
+    const banner = document.getElementById('cookie-banner');
+    const accept = document.getElementById('cookie-banner-accept');
+    if (!banner || !accept) return;
+    try {
+      const consent = localStorage.getItem(storageKey);
+      if (!consent) {
+        banner.hidden = false;
+        requestAnimationFrame(() => banner.classList.add('is-visible'));
+      }
+    } catch (_) {
+      banner.hidden = false;
+      requestAnimationFrame(() => banner.classList.add('is-visible'));
+    }
+    accept.addEventListener('click', () => {
+      try {
+        localStorage.setItem(storageKey, 'accepted');
+      } catch (_) {}
+      banner.classList.remove('is-visible');
+      setTimeout(() => {
+        banner.hidden = true;
+      }, 220);
+    });
+  })();
+</script>
+<style>
+  .cookie-banner {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9200;
+    width: min(440px, calc(100vw - 32px));
+    padding: 18px 18px 16px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  .cookie-banner.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cookie-banner__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--accent-secondary);
+  }
+  .cookie-banner__icon .material-symbols-outlined {
+    font-size: 1.35rem;
+  }
+  .cookie-banner__content {
+    min-width: 0;
+  }
+  .cookie-banner__title {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+  .cookie-banner__text {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .cookie-banner__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .cookie-banner__link,
+  .cookie-banner__button {
+    font-size: 0.84rem;
+    padding: 10px 16px;
+  }
+  @media (max-width: 640px) {
+    .cookie-banner {
+      right: 16px;
+      bottom: 16px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px;
+    }
+    .cookie-banner__icon {
+      width: 42px;
+      height: 42px;
+    }
+    .cookie-banner__actions {
+      flex-direction: column;
+    }
+    .cookie-banner__link,
+    .cookie-banner__button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Stats from '../../components/Stats.astro';
+import Map from '../../components/Map.astro';
+import Blog from '../../components/Blog.astro';
+import Contacts from '../../components/Contacts.astro';
+import Footer from '../../components/Footer.astro';
+import type { Lang } from '../../i18n/index';
+const lang: Lang = 'tt';
+---
+<BaseLayout lang={lang}>
+  <Header lang={lang} currentPath="/tt/" />
+  <main id="main-content">
+    <Hero lang={lang} />
+    <Services lang={lang} />
+    <Stats lang={lang} />
+    <Map lang={lang} />
+    <Blog lang={lang} />
+    <Contacts lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>

@@ -1,0 +1,527 @@
+---
+import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const regions = [
+  { name: 'Казань', lat: 55.8304, lng: 49.0661, type: 'home', desc: 'Штаб-квартира и быстрый выезд' },
+  { name: 'Москва', lat: 55.7558, lng: 37.6173, type: 'request', desc: 'Маршрут по запросу' },
+  { name: 'Санкт-Петербург', lat: 59.9343, lng: 30.3351, type: 'request', desc: 'Маршрут по запросу' },
+  { name: 'Нижний Новгород', lat: 56.2965, lng: 43.9361, type: 'request', desc: 'Маршрут по запросу' },
+  { name: 'Самара', lat: 53.1959, lng: 50.1008, type: 'request', desc: 'Маршрут по запросу' },
+  { name: 'Уфа', lat: 54.7388, lng: 55.9721, type: 'request', desc: 'Маршрут по запросу' },
+] as const;
+const regionChips = [
+  { icon: 'home_pin', label: 'Казань — штаб-квартира', style: 'home' },
+  { icon: 'near_me', label: 'Казань и соседние регионы', style: 'nearby' },
+  { icon: 'route', label: 'Европейская часть России — по запросу', style: 'request' },
+  { icon: 'support_agent', label: 'Нет города на карте — маршрут согласуем отдельно', style: 'neutral' },
+] as const;
+---
+<section class="section map-section" id="map" aria-labelledby="map-heading">
+  <div class="container">
+    <div class="map-header" data-reveal>
+      <div class="map-header-left">
+        <div class="chip chip-accent section-chip">
+          <span class="material-symbols-outlined" aria-hidden="true">explore</span>
+          {t(lang, 'map_chip')}
+        </div>
+        <h2 class="heading-lg" id="map-heading">
+          {t(lang, 'map_title')}
+        </h2>
+        <p class="map-subtitle" data-reveal data-delay="1">
+          {t(lang, 'map_subtitle')}
+        </p>
+      </div>
+      <div class="map-legend glass" data-reveal="right" data-delay="2" aria-label="Легенда карты">
+        <p class="legend-title">
+          <span class="material-symbols-outlined" aria-hidden="true">legend_toggle</span>
+          {t(lang, 'map_legend_title')}
+        </p>
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="legend-dot legend-dot--home"></div>
+            <span>{t(lang, 'map_radius_local')}</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot legend-dot--regional"></div>
+            <span>{t(lang, 'map_radius_regional')}</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot legend-dot--request"></div>
+            <span>{t(lang, 'map_radius_federal')}</span>
+          </div>
+        </div>
+        <div class="legend-cta">
+          <p class="legend-cta-text">Нет вашего города? Согласуем маршрут отдельно.</p>
+          <a href="tel:+78432000000" class="btn-primary legend-call-btn">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+            Уточнить маршрут
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="map-wrap" data-reveal data-delay="2">
+      <div id="delivery-map" class="leaflet-map" aria-label="Карта географии доставок" role="img"></div>
+      <div id="map-tooltip" class="map-tooltip glass" aria-live="polite" aria-atomic="true">
+        <div class="map-tooltip-inner">
+          <span class="material-symbols-outlined map-tooltip-icon icon-filled" aria-hidden="true">location_on</span>
+          <div>
+            <div class="map-tooltip-city"></div>
+            <div class="map-tooltip-desc"></div>
+          </div>
+        </div>
+        <a href="tel:+78432000000" class="map-tooltip-cta">
+          <span class="material-symbols-outlined" aria-hidden="true">call</span>
+          Позвонить
+        </a>
+      </div>
+    </div>
+    <div class="region-chips" data-reveal data-delay="3" aria-label="Направления доставки">
+      {regionChips.map((chip) => (
+        <div class={`region-chip region-chip--${chip.style}`}>
+          <span class="material-symbols-outlined" aria-hidden="true">{chip.icon}</span>
+          {chip.label}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" is:inline></script>
+<script is:inline define:vars={{ regions }}>
+  (function() {
+    function initMap() {
+      const mapRoot = document.getElementById('delivery-map');
+      if (!mapRoot || typeof L === 'undefined' || mapRoot.dataset.initialized === 'true') {
+        if (!mapRoot || typeof L === 'undefined') setTimeout(initMap, 200);
+        return;
+      }
+      mapRoot.dataset.initialized = 'true';
+      const tileUrl = document.documentElement.getAttribute('data-theme') === 'dark'
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      const map = L.map(mapRoot, {
+        zoomControl: false,
+        attributionControl: false,
+        scrollWheelZoom: false,
+        preferCanvas: true,
+      });
+      const tileLayer = L.tileLayer(tileUrl, {
+        maxZoom: 18,
+        subdomains: 'abcd',
+      }).addTo(map);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      L.control.attribution({
+        position: 'bottomleft',
+        prefix: '&copy; <a href="https://carto.com">CARTO</a>'
+      }).addTo(map);
+      const colors = {
+        home: '#f59e0b',
+        nearby: '#1a56db',
+        request: '#0f766e',
+      };
+      const tooltip = document.getElementById('map-tooltip');
+      const tooltipCity = tooltip?.querySelector('.map-tooltip-city');
+      const tooltipDesc = tooltip?.querySelector('.map-tooltip-desc');
+      const kazan = regions[0];
+      [
+        { radius: 45000, color: colors.home, opacity: 0.14, dashArray: '', weight: 1.6 },
+        { radius: 260000, color: colors.nearby, opacity: 0.08, dashArray: '10, 10', weight: 1.4 },
+      ].forEach((coverage) => {
+        L.circle([kazan.lat, kazan.lng], {
+          radius: coverage.radius,
+          color: coverage.color,
+          fillColor: coverage.color,
+          fillOpacity: coverage.opacity,
+          weight: coverage.weight,
+          opacity: 0.55,
+          dashArray: coverage.dashArray,
+        }).addTo(map);
+      });
+      regions.forEach((region) => {
+        const size = region.type === 'home' ? 46 : 30;
+        const color = region.type === 'home' ? colors.home : colors.request;
+        const icon = L.divIcon({
+          className: '',
+          html: `
+            <div style="
+              width:${size}px;
+              height:${size}px;
+              border-radius:50%;
+              background:${color};
+              border:3px solid rgba(255,255,255,0.88);
+              box-shadow:0 8px 18px rgba(0,0,0,0.22);
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              ${region.type === 'home' ? 'animation: map-pulse 2.6s ease infinite;' : 'animation: map-breathe 3.2s ease-in-out infinite;'}
+            ">
+              <div style="
+                width:${region.type === 'home' ? 16 : 10}px;
+                height:${region.type === 'home' ? 16 : 10}px;
+                border-radius:50%;
+                background:white;
+              "></div>
+            </div>
+          `,
+          iconSize: [size, size],
+          iconAnchor: [size / 2, size / 2],
+        });
+        const marker = L.marker([region.lat, region.lng], { icon, alt: region.name }).addTo(map);
+        marker.bindPopup(`
+          <div style="min-width:180px;font-family:Inter,sans-serif;">
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">${region.name}</div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:12px;">${region.desc}</div>
+            <a href="tel:+78432000000" style="
+              display:inline-flex;
+              align-items:center;
+              gap:6px;
+              padding:8px 12px;
+              background:${color};
+              color:#fff;
+              border-radius:10px;
+              font-size:12px;
+              font-weight:600;
+              text-decoration:none;
+            ">
+              <span class="material-symbols-outlined" style="font-size:14px;">call</span>
+              Уточнить
+            </a>
+          </div>
+        `, {
+          closeButton: false,
+          className: 'custom-popup',
+        });
+        const showTooltip = () => {
+          if (!tooltip || !tooltipCity || !tooltipDesc) return;
+          tooltipCity.textContent = region.name;
+          tooltipDesc.textContent = region.desc;
+          tooltip.classList.add('visible');
+        };
+        const hideTooltip = () => {
+          tooltip?.classList.remove('visible');
+        };
+        marker.on('mouseover', showTooltip);
+        marker.on('mouseout', hideTooltip);
+        marker.on('click', showTooltip);
+        if (region.type === 'request') {
+          L.polyline([[kazan.lat, kazan.lng], [region.lat, region.lng]], {
+            color: colors.request,
+            weight: 1.4,
+            opacity: 0.28,
+            dashArray: '8, 8',
+          }).addTo(map);
+        }
+      });
+      const bounds = L.latLngBounds(regions.map((region) => [region.lat, region.lng]));
+      map.fitBounds(bounds.pad(0.18), {
+        paddingTopLeft: [24, 24],
+        paddingBottomRight: [24, 24],
+      });
+      const syncMapSize = () => {
+        requestAnimationFrame(() => map.invalidateSize());
+      };
+      window.addEventListener('resize', syncMapSize);
+      window.addEventListener('load', syncMapSize);
+      setTimeout(syncMapSize, 260);
+      const themeBtn = document.getElementById('theme-toggle');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          setTimeout(() => {
+            const newUrl = document.documentElement.getAttribute('data-theme') === 'dark'
+              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+              : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+            tileLayer.setUrl(newUrl);
+          }, 240);
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMap);
+    } else {
+      initMap();
+    }
+  })();
+</script>
+<style>
+  .map-section {
+    background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 50%, rgba(26, 86, 219, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .map-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 40px;
+  }
+  .section-chip {
+    margin-bottom: 16px;
+  }
+  .map-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-top: 12px;
+    max-width: 460px;
+  }
+  .map-legend {
+    padding: 24px;
+    min-width: 290px;
+    max-width: 340px;
+  }
+  .legend-title {
+    font-weight: var(--font-semibold);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .legend-title .material-symbols-outlined {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+  .legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 0 6px currentColor;
+  }
+  .legend-dot--home {
+    background: #f59e0b;
+    color: #f59e0b;
+  }
+  .legend-dot--regional {
+    background: #1a56db;
+    color: #1a56db;
+  }
+  .legend-dot--request {
+    background: #0f766e;
+    color: #0f766e;
+  }
+  .legend-cta {
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .legend-cta-text {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .legend-call-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.88rem;
+    padding: 10px 16px;
+  }
+  .map-wrap {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    isolation: isolate;
+  }
+  .leaflet-map {
+    height: 520px;
+    width: 100%;
+    background: var(--bg-secondary);
+    z-index: 1;
+  }
+  .map-tooltip {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    z-index: 1000;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    max-width: 280px;
+  }
+  .map-tooltip.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .map-tooltip-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  .map-tooltip-icon {
+    font-size: 1.3rem;
+    color: var(--accent-secondary);
+    flex-shrink: 0;
+  }
+  .map-tooltip-city {
+    font-weight: var(--font-semibold);
+    font-size: 0.92rem;
+    color: var(--text-primary);
+  }
+  .map-tooltip-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .map-tooltip-cta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: var(--accent);
+    color: white;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+    pointer-events: auto;
+    transition: opacity 0.2s;
+  }
+  .map-tooltip-cta:hover {
+    opacity: 0.88;
+  }
+  .map-tooltip-cta .material-symbols-outlined {
+    font-size: 0.9rem;
+  }
+  :global(.custom-popup .leaflet-popup-content-wrapper) {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid var(--border) !important;
+    background: var(--bg-glass-strong) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+  :global(.custom-popup .leaflet-popup-tip) {
+    background: var(--bg-glass-strong) !important;
+  }
+  :global(.leaflet-control-zoom a) {
+    background: var(--bg-glass-strong) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+  .region-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .region-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: var(--font-semibold);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+    cursor: default;
+  }
+  .region-chip:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
+    background: rgba(26, 86, 219, 0.04);
+  }
+  .region-chip .material-symbols-outlined {
+    font-size: 0.95rem;
+  }
+  .region-chip--home {
+    color: #d97706;
+    border-color: rgba(217, 119, 6, 0.3);
+  }
+  .region-chip--nearby {
+    color: var(--accent);
+    border-color: rgba(26, 86, 219, 0.25);
+  }
+  .region-chip--request {
+    color: #0f766e;
+    border-color: rgba(15, 118, 110, 0.3);
+  }
+  .region-chip--neutral {
+    color: var(--text-secondary);
+  }
+  @media (max-width: 860px) {
+    .map-header {
+      grid-template-columns: 1fr;
+    }
+    .map-legend {
+      max-width: 100%;
+      min-width: auto;
+    }
+    .leaflet-map {
+      height: 380px;
+    }
+  }
+  @media (max-width: 480px) {
+    .leaflet-map {
+      height: 320px;
+    }
+    .map-tooltip {
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      max-width: none;
+    }
+    .region-chip {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  @keyframes map-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4), 0 8px 18px rgba(0, 0, 0, 0.22);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(245, 158, 11, 0), 0 8px 18px rgba(0, 0, 0, 0.22);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0), 0 8px 18px rgba(0, 0, 0, 0.22);
+    }
+  }
+  @keyframes map-breathe {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+</style>

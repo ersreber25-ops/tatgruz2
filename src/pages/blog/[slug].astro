@@ -1,0 +1,784 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import type { Lang } from '../../i18n/index';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+  }));
+}
+const slug = Astro.params.slug!;
+const post = await getEntry('blog', slug);
+if (!post) {
+  throw new Error(`Blog post not found: ${slug}`);
+}
+const { Content } = await render(post);
+const lang: Lang = 'ru';
+const allPosts = await getCollection('blog');
+const sorted = allPosts.sort((a, b) =>
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+const currentIndex = sorted.findIndex((p) => p.id === post.id);
+const prevPost = sorted[currentIndex + 1] ?? null;
+const nextPost = sorted[currentIndex - 1] ?? null;
+function formatDate(d: Date) {
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(d);
+}
+---
+<BaseLayout
+  lang={lang}
+  title={post.data.title + ' - Автопарк Лузянина'}
+  description={post.data.description}
+  image={post.data.image}
+  isArticle={true}
+  articleDate={post.data.pubDate.toISOString()}
+  canonicalUrl={`https://autoluz.ru/blog/${post.id}`}
+>
+  <Header lang={lang} currentPath={`/blog/${post.id}`} />
+  <main id="main-content" class="article-page">
+    <div class="article-hero">
+      <div class="article-hero-bg" aria-hidden="true">
+        <img
+          src="/images/blog/placeholder.svg"
+          alt=""
+          class="article-hero-img"
+          width="1200"
+          height="500"
+          loading="eager"
+        />
+        <div class="article-hero-overlay"></div>
+      </div>
+      <div class="container article-hero-inner">
+        <nav class="breadcrumb" aria-label="Хлебные крошки">
+          <ol class="breadcrumb-list">
+            <li>
+              <a href="/" class="breadcrumb-link">
+                <span class="material-symbols-outlined" aria-hidden="true">home</span>
+                Главная
+              </a>
+            </li>
+            <span class="breadcrumb-sep" aria-hidden="true">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </span>
+            <li>
+              <a href="/blog" class="breadcrumb-link">Блог</a>
+            </li>
+            <span class="breadcrumb-sep" aria-hidden="true">
+              <span class="material-symbols-outlined">chevron_right</span>
+            </span>
+            <li>
+              <span class="breadcrumb-current" aria-current="page">
+                {post.data.title}
+              </span>
+            </li>
+          </ol>
+        </nav>
+        <div class="article-meta">
+          <span class="chip chip-accent article-cat">{post.data.category}</span>
+          <span class="article-date">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+            {formatDate(post.data.pubDate)}
+          </span>
+          <span class="article-read">
+            <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+            {post.data.readTime} минут чтения
+          </span>
+        </div>
+        <h1 class="article-title">{post.data.title}</h1>
+        <p class="article-description">{post.data.description}</p>
+      </div>
+    </div>
+    <div class="container article-layout">
+      <article class="article-content glass" data-reveal>
+        <div class="article-img-placeholder">
+          <img
+            src="/images/blog/placeholder.svg"
+            alt={post.data.title}
+            class="article-inner-img"
+            width="800"
+            height="400"
+            loading="lazy"
+          />
+          <p class="article-img-caption">
+            <span class="material-symbols-outlined" aria-hidden="true">image</span>
+            Иллюстрация к статье - замените на реальное фото
+          </p>
+        </div>
+        <div class="article-body">
+          <Content />
+        </div>
+        <div class="article-footer">
+          <div class="article-footer-cta glass">
+            <span class="material-symbols-outlined article-footer-icon icon-filled" aria-hidden="true">local_shipping</span>
+            <div class="article-footer-text">
+              <strong>Нужна перевозка?</strong>
+              <p>Звоните - рассчитаем стоимость за 3 минуты</p>
+            </div>
+            <div class="article-footer-btns">
+              <a href="tel:+78432000000" class="btn-primary article-call-btn">
+                <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+                Позвонить
+              </a>
+              <a href="mailto:info@autoluz.ru" class="btn-secondary article-mail-btn">
+                <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+                Написать
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+      <aside class="article-sidebar" aria-label="Дополнительная информация">
+        <div class="sidebar-card glass" data-reveal="right">
+          <div class="sidebar-card-header">
+            <img
+              src="/images/sprinter-front.png"
+              alt="Mercedes Sprinter Classic"
+              class="sidebar-truck"
+              width="160"
+              height="180"
+              loading="lazy"
+            />
+          </div>
+          <div class="sidebar-card-body">
+            <h3 class="sidebar-title">Автопарк Лузянина</h3>
+            <p class="sidebar-subtitle">Грузоперевозки по Казани и России</p>
+            <div class="sidebar-contacts">
+              <a href="tel:+78432000000" class="sidebar-contact">
+                <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+                +7 (843) 200-00-00
+              </a>
+              <a href="mailto:info@autoluz.ru" class="sidebar-contact">
+                <span class="material-symbols-outlined icon-filled" aria-hidden="true">mail</span>
+                info@autoluz.ru
+              </a>
+            </div>
+            <a href="tel:+78432000000" class="btn-primary sidebar-cta-btn">
+              <span class="material-symbols-outlined icon-filled" aria-hidden="true">call</span>
+              Позвонить сейчас
+            </a>
+          </div>
+        </div>
+        <div class="sidebar-benefits glass" data-reveal="right" data-delay="1">
+          <h3 class="sidebar-benefits-title">
+            <span class="material-symbols-outlined icon-filled" aria-hidden="true">verified</span>
+            Почему мы
+          </h3>
+          <ul class="benefits-list" role="list">
+            {[
+              { icon: 'bolt', text: 'Выезд за 2 часа' },
+              { icon: 'gavel', text: 'Официальный договор' },
+              { icon: 'shield', text: 'Груз застрахован' },
+              { icon: 'price_check', text: 'Фиксированная цена' },
+              { icon: 'gps_fixed', text: 'GPS-отслеживание' },
+              { icon: 'headset_mic', text: 'Поддержка 24/7' },
+            ].map(b => (
+              <li class="benefit-item">
+                <span class="material-symbols-outlined icon-filled benefit-icon" aria-hidden="true">{b.icon}</span>
+                <span>{b.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {(prevPost || nextPost) && (
+          <div class="sidebar-related glass" data-reveal="right" data-delay="2">
+            <h3 class="sidebar-related-title">
+              <span class="material-symbols-outlined" aria-hidden="true">library_books</span>
+              Читайте также
+            </h3>
+            <div class="related-posts">
+              {nextPost && (
+                <a href={`/blog/${nextPost.id}`} class="related-post">
+                  <div class="related-post-img-wrap">
+                    <img src="/images/blog/placeholder.svg" alt="" width="60" height="60" loading="lazy" />
+                  </div>
+                  <div class="related-post-body">
+                    <span class="related-post-cat">{nextPost.data.category}</span>
+                    <span class="related-post-title">{nextPost.data.title}</span>
+                  </div>
+                  <span class="material-symbols-outlined related-arrow" aria-hidden="true">chevron_right</span>
+                </a>
+              )}
+              {prevPost && (
+                <a href={`/blog/${prevPost.id}`} class="related-post">
+                  <div class="related-post-img-wrap">
+                    <img src="/images/blog/placeholder.svg" alt="" width="60" height="60" loading="lazy" />
+                  </div>
+                  <div class="related-post-body">
+                    <span class="related-post-cat">{prevPost.data.category}</span>
+                    <span class="related-post-title">{prevPost.data.title}</span>
+                  </div>
+                  <span class="material-symbols-outlined related-arrow" aria-hidden="true">chevron_right</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </aside>
+    </div>
+    <div class="container article-nav">
+      {prevPost && (
+        <a href={`/blog/${prevPost.id}`} class="article-nav-btn glass article-nav-prev">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          <div>
+            <span class="article-nav-label">Предыдущая</span>
+            <span class="article-nav-title">{prevPost.data.title}</span>
+          </div>
+        </a>
+      )}
+      {!prevPost && <div></div>}
+      {nextPost && (
+        <a href={`/blog/${nextPost.id}`} class="article-nav-btn glass article-nav-next">
+          <div>
+            <span class="article-nav-label">Следующая</span>
+            <span class="article-nav-title">{nextPost.data.title}</span>
+          </div>
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </a>
+      )}
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+<style>
+  .article-hero {
+    position: relative;
+    height: 420px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    margin-top: 66px;
+  }
+  .article-hero-bg {
+    position: absolute;
+    inset: 0;
+  }
+  .article-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(2px) saturate(0.7);
+  }
+  .article-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(10,14,26,0.3) 0%,
+      rgba(10,14,26,0.85) 100%
+    );
+  }
+  .article-hero-inner {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 48px;
+  }
+  .breadcrumb { margin-bottom: 20px; }
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  .breadcrumb-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  .breadcrumb-link:hover { color: white; }
+  .breadcrumb-link .material-symbols-outlined { font-size: 1rem; }
+  .breadcrumb-sep .material-symbols-outlined {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.3);
+  }
+  .breadcrumb-current {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .article-cat { font-size: 0.72rem; }
+  .article-date, .article-read {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .article-date .material-symbols-outlined,
+  .article-read .material-symbols-outlined { font-size: 0.9rem; }
+  .article-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: var(--font-semibold);
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    max-width: 800px;
+    letter-spacing: -0.02em;
+  }
+  .article-description {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  .article-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    align-items: start;
+    padding-top: 48px;
+    padding-bottom: 80px;
+  }
+  .article-content {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .article-img-placeholder {
+    position: relative;
+  }
+  .article-inner-img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+  }
+  .article-img-caption {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding: 10px 24px;
+    background: var(--bg-dark-card);
+    border-bottom: 1px solid var(--border);
+  }
+  .article-img-caption .material-symbols-outlined { font-size: 0.9rem; }
+  .article-body {
+    padding: 36px 40px;
+  }
+  .article-body :global(h2) {
+    font-size: 1.6rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 36px 0 16px;
+    letter-spacing: -0.015em;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .article-body :global(h3) {
+    font-size: 1.2rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 28px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .article-body :global(h3)::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 1em;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .article-body :global(p) {
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 16px;
+    font-size: 1rem;
+  }
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    color: var(--text-secondary);
+    margin: 16px 0 24px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .article-body :global(ul li),
+  .article-body :global(ol li) {
+    padding: 8px 12px 8px 36px;
+    margin-bottom: 6px;
+    position: relative;
+    border-radius: var(--radius-sm);
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  .article-body :global(ul li)::before {
+    content: 'check_circle';
+    font-family: 'Material Symbols Outlined';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 1rem;
+    font-variation-settings: 'FILL' 1;
+  }
+  .article-body :global(ol) {
+    counter-reset: list-counter;
+  }
+  .article-body :global(ol li) {
+    counter-increment: list-counter;
+  }
+  .article-body :global(ol li)::before {
+    content: counter(list-counter);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-weight: var(--font-semibold);
+    font-size: 0.85rem;
+  }
+  .article-body :global(strong) {
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+  }
+  .article-body :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .article-body :global(blockquote) {
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    background: rgba(26,86,219,0.06);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  .article-body :global(code) {
+    background: var(--bg-dark-card);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.88em;
+    color: var(--accent);
+  }
+  .article-footer {
+    padding: 0 40px 32px;
+  }
+  .article-footer-cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    border-radius: var(--radius-md);
+    flex-wrap: wrap;
+    border: 1px solid var(--border-strong);
+  }
+  .article-footer-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .article-footer-text {
+    flex: 1;
+    min-width: 180px;
+  }
+  .article-footer-text strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .article-footer-text p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .article-footer-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .article-call-btn, .article-mail-btn {
+    font-size: 0.9rem;
+    padding: 11px 20px;
+  }
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 90px;
+  }
+  .sidebar-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .sidebar-card-header {
+    background: var(--gradient-hero);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .sidebar-truck {
+    height: 120px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(26,86,219,0.4));
+    animation: truck-hover 4s ease-in-out infinite;
+  }
+  .sidebar-card-body {
+    padding: 20px;
+  }
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .sidebar-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .sidebar-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .sidebar-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    word-break: break-all;
+  }
+  .sidebar-contact .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .sidebar-contact:hover {
+    background: rgba(26,86,219,0.08);
+    color: var(--accent);
+  }
+  .sidebar-cta-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 12px;
+    animation: cta-glow 3s ease-in-out infinite;
+  }
+  .sidebar-benefits {
+    padding: 20px;
+    border-radius: var(--radius-md);
+  }
+  .sidebar-benefits-title {
+    font-size: 0.88rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar-benefits-title .material-symbols-outlined {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+  .benefits-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background var(--transition-fast);
+  }
+  .benefit-item:hover { background: var(--bg-dark-card); }
+  .benefit-icon {
+    font-size: 1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .sidebar-related {
+    padding: 20px;
+    border-radius: var(--radius-md);
+  }
+  .sidebar-related-title {
+    font-size: 0.88rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar-related-title .material-symbols-outlined {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+  .related-posts { display: flex; flex-direction: column; gap: 10px; }
+  .related-post {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    transition: all var(--transition-fast);
+  }
+  .related-post:hover {
+    border-color: var(--accent);
+    background: rgba(26,86,219,0.06);
+  }
+  .related-post-img-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .related-post-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .related-post-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .related-post-cat {
+    font-size: 0.68rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: var(--font-semibold);
+  }
+  .related-post-title {
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    font-weight: var(--font-semibold);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .related-arrow {
+    font-size: 1rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+  .related-post:hover .related-arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+  .article-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 80px;
+  }
+  .article-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    max-width: 48%;
+    transition: all var(--transition);
+  }
+  .article-nav-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-strong);
+  }
+  .article-nav-btn .material-symbols-outlined {
+    font-size: 1.4rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .article-nav-prev { flex-direction: row; }
+  .article-nav-next { flex-direction: row-reverse; text-align: right; margin-left: auto; }
+  .article-nav-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: var(--font-semibold);
+  }
+  .article-nav-title {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  @media (max-width: 1024px) {
+    .article-layout {
+      grid-template-columns: 1fr;
+    }
+    .article-sidebar {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .sidebar-card { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .article-hero { height: 340px; }
+    .article-title { font-size: 1.5rem; }
+    .article-body { padding: 24px 20px; }
+    .article-footer { padding: 0 20px 24px; }
+    .article-footer-cta { flex-direction: column; text-align: center; }
+    .article-footer-btns { justify-content: center; }
+    .article-sidebar { grid-template-columns: 1fr; }
+    .sidebar-card { grid-column: span 1; }
+    .article-nav { flex-direction: column; }
+    .article-nav-btn { max-width: 100%; }
+    .article-nav-next { flex-direction: row; text-align: left; margin-left: 0; }
+    .breadcrumb-current { max-width: 120px; }
+  }
+</style>
